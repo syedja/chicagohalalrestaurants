@@ -2,57 +2,62 @@ import fs from 'fs'
 
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY
 
-const neighborhoods = [
-  "devon ave chicago", "bridgeview illinois", "oak lawn illinois",
-  "skokie illinois", "naperville illinois", "logan square chicago",
-  "hyde park chicago", "lincoln park chicago", "wicker park chicago",
-  "evanston illinois", "schaumburg illinois", "orland park illinois",
-  "lombard illinois", "norridge illinois"
+const searches = [
+  // Pakistani
+  { query: "pakistani halal restaurants devon ave chicago", cuisine: "pakistani", neighborhood: "devon-ave" },
+  { query: "pakistani halal restaurants chicago", cuisine: "pakistani", neighborhood: "chicago" },
+  // Indian
+  { query: "indian halal restaurants devon ave chicago", cuisine: "indian", neighborhood: "devon-ave" },
+  { query: "indian halal restaurants schaumburg illinois", cuisine: "indian", neighborhood: "schaumburg" },
+  // Mediterranean
+  { query: "mediterranean halal restaurants bridgeview illinois", cuisine: "mediterranean", neighborhood: "bridgeview" },
+  { query: "mediterranean halal restaurants skokie illinois", cuisine: "mediterranean", neighborhood: "skokie" },
+  { query: "mediterranean halal restaurants oak lawn illinois", cuisine: "mediterranean", neighborhood: "oak-lawn" },
+  // Middle Eastern
+  { query: "middle eastern halal restaurants bridgeview illinois", cuisine: "middle-eastern", neighborhood: "bridgeview" },
+  { query: "middle eastern halal restaurants devon ave chicago", cuisine: "middle-eastern", neighborhood: "devon-ave" },
+  { query: "middle eastern halal restaurants chicago", cuisine: "middle-eastern", neighborhood: "chicago" },
+  // Turkish
+  { query: "turkish halal restaurants chicago", cuisine: "turkish", neighborhood: "chicago" },
+  { query: "turkish halal restaurants naperville illinois", cuisine: "turkish", neighborhood: "naperville" },
+  // Lebanese
+  { query: "lebanese halal restaurants chicago", cuisine: "lebanese", neighborhood: "chicago" },
+  { query: "lebanese halal restaurants bridgeview illinois", cuisine: "lebanese", neighborhood: "bridgeview" },
+  // Fried Chicken
+  { query: "halal fried chicken restaurants chicago", cuisine: "fried-chicken", neighborhood: "chicago" },
+  { query: "halal fried chicken restaurants oak lawn illinois", cuisine: "fried-chicken", neighborhood: "oak-lawn" },
+  { query: "halal fried chicken restaurants bridgeview illinois", cuisine: "fried-chicken", neighborhood: "bridgeview" },
+  // Ethiopian/Somali
+  { query: "somali halal restaurants chicago", cuisine: "somali", neighborhood: "chicago" },
+  { query: "ethiopian halal restaurants chicago", cuisine: "ethiopian", neighborhood: "chicago" },
+  // Evanston
+  { query: "halal restaurants evanston illinois", cuisine: "middle-eastern", neighborhood: "evanston" },
+  // Naperville
+  { query: "halal restaurants naperville illinois", cuisine: "mediterranean", neighborhood: "naperville" },
+  // Schaumburg
+  { query: "halal restaurants schaumburg illinois", cuisine: "middle-eastern", neighborhood: "schaumburg" },
+  // Logan Square
+  { query: "halal restaurants logan square chicago", cuisine: "middle-eastern", neighborhood: "logan-square" },
+  // Hyde Park
+  { query: "halal restaurants hyde park chicago", cuisine: "middle-eastern", neighborhood: "hyde-park" },
+  // Orland Park
+  { query: "halal restaurants orland park illinois", cuisine: "mediterranean", neighborhood: "orland-park" },
+  // Lombard
+  { query: "halal restaurants lombard illinois", cuisine: "middle-eastern", neighborhood: "lombard" },
+    // Glendale Heights
+  { query: "halal restaurants lombard illinois", cuisine: "middle-eastern", neighborhood: "glendale-heights" },
+    // Chicago
+  { query: "halal restaurants lombard illinois", cuisine: "middle-eastern", neighborhood: "chicago" },
 ]
-
-const slugify = (str) => str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-
-const guessCuisine = (name, types) => {
-  const n = name.toLowerCase()
-  if (n.includes('pakistan') || n.includes('nihari') || n.includes('karachi')) return 'pakistani'
-  if (n.includes('india') || n.includes('tandoor') || n.includes('curry')) return 'indian'
-  if (n.includes('turkish') || n.includes('kebab') || n.includes('istanbul')) return 'turkish'
-  if (n.includes('lebanese') || n.includes('beirut')) return 'lebanese'
-  if (n.includes('somali') || n.includes('ethiopia')) return 'ethiopian'
-  if (n.includes('chicken') || n.includes('wings') || n.includes('bucket')) return 'fried-chicken'
-  if (n.includes('pita') || n.includes('falafel') || n.includes('shawarma') || n.includes('gyro')) return 'mediterranean'
-  return 'middle-eastern'
-}
-
-const guessNeighborhood = (vicinity) => {
-  const v = vicinity.toLowerCase()
-  if (v.includes('bridgeview')) return 'bridgeview'
-  if (v.includes('oak lawn')) return 'oak-lawn'
-  if (v.includes('skokie')) return 'skokie'
-  if (v.includes('naperville')) return 'naperville'
-  if (v.includes('schaumburg')) return 'schaumburg'
-  if (v.includes('evanston')) return 'evanston'
-  if (v.includes('orland park')) return 'orland-park'
-  if (v.includes('lombard')) return 'lombard'
-  if (v.includes('norridge')) return 'norridge'
-  if (v.includes('devon')) return 'devon-ave'
-  if (v.includes('logan')) return 'logan-square'
-  if (v.includes('glendale heights')) return 'glendale-heights'
-  if (v.includes('chicago')) return 'chicago'
-  if (v.includes('hyde park')) return 'hyde-park'
-  if (v.includes('lincoln park')) return 'lincoln-park'
-  if (v.includes('wicker park')) return 'wicker-park'
-  return 'chicago'
-}
 
 async function fetchRestaurants() {
   const allRestaurants = []
   const seen = new Set()
 
-  for (const neighborhood of neighborhoods) {
-    console.log(`Fetching halal restaurants in ${neighborhood}...`)
+  for (const search of searches) {
+    console.log(`Fetching: ${search.query}...`)
 
-    const query = encodeURIComponent(`halal restaurants in ${neighborhood}`)
+    const query = encodeURIComponent(search.query)
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${API_KEY}`
 
     try {
@@ -64,6 +69,7 @@ async function fetchRestaurants() {
         continue
       }
 
+      let added = 0
       for (const place of data.results) {
         if (seen.has(place.place_id)) continue
         seen.add(place.place_id)
@@ -71,21 +77,22 @@ async function fetchRestaurants() {
         allRestaurants.push({
           name: place.name,
           address: place.formatted_address || place.vicinity || '',
-          neighborhood: guessNeighborhood(place.vicinity || place.formatted_address || ''),
+          neighborhood: search.neighborhood,
           zip: '',
-          cuisine: guessCuisine(place.name, place.types),
+          cuisine: search.cuisine,
           rating: place.rating || 0,
           certified_halal: true,
           family_friendly: true,
           delivery_available: true
         })
+        added++
       }
 
-      console.log(`  Found ${data.results.length} restaurants`)
+      console.log(`  Added ${added} new restaurants`)
       await new Promise(r => setTimeout(r, 500))
 
     } catch (err) {
-      console.error(`  Error fetching ${neighborhood}:`, err.message)
+      console.error(`  Error:`, err.message)
     }
   }
 
