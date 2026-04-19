@@ -1,4 +1,5 @@
 import restaurants from '../../data/restaurants.json'
+import content from '../../data/content.json'
 
 export async function generateStaticParams() {
   const combinations = []
@@ -18,26 +19,28 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { cuisine, neighborhood } = await params
   const cuisineText = cuisine.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-const neighborhoodText = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+  const neighborhoodText = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
   return {
     title: `Best Halal ${cuisineText} Restaurants in ${neighborhoodText}, Chicago`,
-    description: `Find the top halal ${cuisineText} restaurants in ${neighborhoodText}, Chicago.`,
+    description: `Find the top halal ${cuisineText} restaurants in ${neighborhoodText}, Chicago. Verified halal options with ratings, hours, and addresses.`,
   }
 }
 
 export default async function Page({ params }) {
   const { cuisine, neighborhood } = await params
   const cuisineText = cuisine.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-const neighborhoodText = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+  const neighborhoodText = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
 
   const results = restaurants.filter(
     r => r.cuisine === cuisine && r.neighborhood === neighborhood
   )
 
+  const intro = content[`${cuisine}|${neighborhood}`] || ''
+
   return (
     <main style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
       <h1>Best Halal {cuisineText} Restaurants in {neighborhoodText}, Chicago</h1>
-      <p>Verified halal options with ratings, hours, and addresses.</p>
+      {intro && <p style={{ fontSize: '1.1rem', lineHeight: '1.7', color: '#444', marginBottom: '2rem' }}>{intro}</p>}
 
       {results.length === 0 ? (
         <p>No listings yet for this area — check back soon!</p>
