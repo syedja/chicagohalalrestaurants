@@ -17,8 +17,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { cuisine, neighborhood } = await params
-  const cuisineText = cuisine.replace(/-/g, ' ')
-  const neighborhoodText = neighborhood.replace(/-/g, ' ')
+  const cuisineText = cuisine.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+const neighborhoodText = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
   return {
     title: `Best Halal ${cuisineText} Restaurants in ${neighborhoodText}, Chicago`,
     description: `Find the top halal ${cuisineText} restaurants in ${neighborhoodText}, Chicago.`,
@@ -27,8 +27,8 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const { cuisine, neighborhood } = await params
-  const cuisineText = cuisine.replace(/-/g, ' ')
-  const neighborhoodText = neighborhood.replace(/-/g, ' ')
+  const cuisineText = cuisine.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+const neighborhoodText = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
 
   const results = restaurants.filter(
     r => r.cuisine === cuisine && r.neighborhood === neighborhood
