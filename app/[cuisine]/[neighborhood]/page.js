@@ -1,5 +1,20 @@
 import restaurants from '../../data/restaurants.json'
 
+export async function generateStaticParams() {
+  const combinations = []
+  const seen = new Set()
+
+  for (const r of restaurants) {
+    const key = `${r.cuisine}-${r.neighborhood}`
+    if (!seen.has(key)) {
+      seen.add(key)
+      combinations.push({ cuisine: r.cuisine, neighborhood: r.neighborhood })
+    }
+  }
+
+  return combinations
+}
+
 export async function generateMetadata({ params }) {
   const { cuisine, neighborhood } = await params
   const cuisineText = cuisine.replace(/-/g, ' ')
