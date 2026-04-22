@@ -11,6 +11,7 @@ const cuisines = [
   { slug: 'fried-chicken', label: '🍗 Fried Chicken' },
   { slug: 'somali', label: '🍚 Somali' },
   { slug: 'ethiopian', label: '🫕 Ethiopian' },
+{ slug: 'american', label: '🍔 American' },
 ]
 
 const neighborhoods = [
