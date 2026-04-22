@@ -8,7 +8,7 @@ const cuisines = [
   { slug: 'middle-eastern', label: '🧆 Middle Eastern' },
   { slug: 'turkish', label: '🥗 Turkish' },
   { slug: 'lebanese', label: '🫓 Lebanese' },
-  { slug: 'fried-chicken', label: '🍗 Fried Chicken' },
+{ slug: 'glendale-heights', label: 'Glendale Heights' },{ slug: 'glendale-heights', label: 'Glendale Heights' },{ slug: 'glendale-heights', label: 'Glendale Heights' }, { slug: 'fried-chicken', label: '🍗 Fried Chicken' },
   { slug: 'somali', label: '🍚 Somali' },
   { slug: 'ethiopian', label: '🫕 Ethiopian' },
 ]
@@ -23,7 +23,7 @@ const neighborhoods = [
   { slug: 'schaumburg', label: 'Schaumburg' },
   { slug: 'evanston', label: 'Evanston' },
   { slug: 'logan-square', label: 'Logan Square' },
-  { slug: 'glendale-heights', label: 'Glendale Heights' },
+
   { slug: 'orland-park', label: 'Orland Park' },
   { slug: 'lombard', label: 'Lombard' },
 ]
