@@ -133,7 +133,7 @@ export default function Home() {
           padding: '0.75rem 2rem', borderRadius: '8px', textDecoration: 'none',
           fontWeight: '700', fontSize: '1rem'
         }}>
-          Get Featured — $29/mo
+          Get Listed — Plans from $19/mo
         </Link>
       </section>
 
