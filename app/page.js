@@ -95,8 +95,11 @@ export default function Home() {
       {/* Featured Restaurants */}
       <section style={{ marginBottom: '2.5rem' }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '1rem', color: '#111' }}>
-          Top Rated Restaurants
-        </h2>
+  Top Rated Halal Spots
+</h2>
+<p style={{ color: '#888', fontSize: '0.9rem', marginTop: '-0.75rem', marginBottom: '1rem' }}>
+  Highest rated halal restaurants, sweet shops, and snack spots across Chicago — all rated 4.4★ and above.
+</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
           {featured.map((r, i) => (
             <div key={i} style={{
