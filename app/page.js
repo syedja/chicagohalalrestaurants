@@ -2,15 +2,15 @@ import restaurants from './data/restaurants.json'
 import Link from 'next/link'
 
 const cuisines = [
-  { slug: 'pakistani', label: 'Pakistani' },
-  { slug: 'indian', label: 'Indian' },
-  { slug: 'mediterranean', label: 'Mediterranean' },
-  { slug: 'middle-eastern', label: 'Middle Eastern' },
-  { slug: 'turkish', label: 'Turkish' },
-  { slug: 'lebanese', label: 'Lebanese' },
-  { slug: 'fried-chicken', label: 'Fried Chicken' },
-  { slug: 'somali', label: 'Somali' },
-  { slug: 'ethiopian', label: 'Ethiopian' },
+  { slug: 'pakistani', label: '🍛 Pakistani' },
+  { slug: 'indian', label: '🍲 Indian' },
+  { slug: 'mediterranean', label: '🥙 Mediterranean' },
+  { slug: 'middle-eastern', label: '🧆 Middle Eastern' },
+  { slug: 'turkish', label: '🥗 Turkish' },
+  { slug: 'lebanese', label: '🫓 Lebanese' },
+  { slug: 'fried-chicken', label: '🍗 Fried Chicken' },
+  { slug: 'somali', label: '🍚 Somali' },
+  { slug: 'ethiopian', label: '🫕 Ethiopian' },
 ]
 
 const neighborhoods = [
@@ -26,41 +26,46 @@ const neighborhoods = [
   { slug: 'hyde-park', label: 'Hyde Park' },
   { slug: 'orland-park', label: 'Orland Park' },
   { slug: 'lombard', label: 'Lombard' },
-  { slug: 'glendale-heights', label: 'Glendale Heights' },
-  { slug: 'chicago', label: 'Chicago' },
 ]
 
 export const metadata = {
   title: 'Chicago Halal Restaurants | Find the Best Halal Food in Chicago',
-  description: 'Discover the best halal restaurants in Chicago and suburbs. Browse by cuisine or neighborhood. All listings verified halal.',
+  description: 'Find verified halal restaurants across Chicago and suburbs. Browse by cuisine or neighborhood.',
 }
 
 export default function Home() {
-  return (
-    <main style={{ fontFamily: 'sans-serif', maxWidth: '900px', margin: '0 auto', padding: '2rem' }}>
+  const featured = restaurants.filter(r => r.rating >= 4.4).slice(0, 12)
 
-      {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#1a1a1a' }}>
-          🕌 Chicago Halal Restaurants
+  return (
+    <main style={{ maxWidth: '960px', margin: '0 auto', padding: '2rem 1rem' }}>
+
+      {/* Hero */}
+      <div style={{ textAlign: 'center', padding: '3rem 1rem', background: '#fff', borderRadius: '16px', marginBottom: '2rem', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+        <div style={{ fontSize: '3rem' }}>🕌</div>
+        <h1 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#111', margin: '0.5rem 0' }}>
+          Chicago Halal Restaurants
         </h1>
-        <p style={{ fontSize: '1.2rem', color: '#555', marginTop: '0.5rem' }}>
+        <p style={{ fontSize: '1.1rem', color: '#555', margin: '0.5rem 0' }}>
           Find verified halal food across Chicago and suburbs
         </p>
-        <p style={{ fontSize: '1rem', color: '#888', marginTop: '0.25rem' }}>
-          {restaurants.length}+ restaurants listed across {neighborhoods.length} neighborhoods
+        <p style={{ fontSize: '0.95rem', color: '#16a34a', fontWeight: '600' }}>
+          {restaurants.length}+ restaurants · {neighborhoods.length} neighborhoods · 9 cuisines
         </p>
       </div>
 
       {/* Browse by Cuisine */}
-      <section style={{ marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '2px solid #eee', paddingBottom: '0.5rem' }}>
+      <section style={{ marginBottom: '2.5rem' }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '1rem', color: '#111' }}>
           Browse by Cuisine
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '0.75rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.75rem' }}>
           {cuisines.map(c => (
-            <Link key={c.slug} href={`/${c.slug}/chicago`}
-              style={{ display: 'block', padding: '0.75rem 1rem', background: '#f9f9f9', border: '1px solid #eee', borderRadius: '8px', textDecoration: 'none', color: '#222', fontWeight: '500', textAlign: 'center' }}>
+            <Link key={c.slug} href={`/${c.slug}/chicago`} style={{
+              display: 'block', padding: '0.85rem 1rem', background: '#fff',
+              border: '1px solid #e5e7eb', borderRadius: '10px', textDecoration: 'none',
+              color: '#222', fontWeight: '500', textAlign: 'center',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+            }}>
               {c.label}
             </Link>
           ))}
@@ -68,54 +73,68 @@ export default function Home() {
       </section>
 
       {/* Browse by Neighborhood */}
-      <section style={{ marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '2px solid #eee', paddingBottom: '0.5rem' }}>
+      <section style={{ marginBottom: '2.5rem' }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '1rem', color: '#111' }}>
           Browse by Neighborhood
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '0.75rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.75rem' }}>
           {neighborhoods.map(n => (
-            <Link key={n.slug} href={`/middle-eastern/${n.slug}`}
-              style={{ display: 'block', padding: '0.75rem 1rem', background: '#f9f9f9', border: '1px solid #eee', borderRadius: '8px', textDecoration: 'none', color: '#222', fontWeight: '500', textAlign: 'center' }}>
+            <Link key={n.slug} href={`/middle-eastern/${n.slug}`} style={{
+              display: 'block', padding: '0.85rem 1rem', background: '#fff',
+              border: '1px solid #e5e7eb', borderRadius: '10px', textDecoration: 'none',
+              color: '#222', fontWeight: '500', textAlign: 'center',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+            }}>
               {n.label}
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Featured Listings */}
-      <section style={{ marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '2px solid #eee', paddingBottom: '0.5rem' }}>
-          Featured Restaurants
+      {/* Featured Restaurants */}
+      <section style={{ marginBottom: '2.5rem' }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '1rem', color: '#111' }}>
+          Top Rated Restaurants
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' }}>
-          {restaurants.slice(0, 12).map((r, i) => (
-            <div key={i} style={{ border: '1px solid #eee', borderRadius: '10px', padding: '1rem', background: '#fff' }}>
-              <h3 style={{ margin: '0 0 0.25rem', fontSize: '1rem' }}>{r.name}</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+          {featured.map((r, i) => (
+            <div key={i} style={{
+              background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px',
+              padding: '1.25rem', boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+            }}>
+              <h3 style={{ margin: '0 0 0.35rem', fontSize: '1rem', fontWeight: '600', color: '#111' }}>{r.name}</h3>
               <p style={{ margin: '0 0 0.25rem', color: '#666', fontSize: '0.85rem' }}>{r.address}</p>
-              <p style={{ margin: '0', color: '#f59e0b', fontSize: '0.85rem' }}>★ {r.rating} / 5</p>
-              <Link href={`/${r.cuisine}/${r.neighborhood}`}
-                style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.8rem', color: '#2563eb', textDecoration: 'none' }}>
-                View all {r.cuisine} in {r.neighborhood.replace(/-/g, ' ')} →
+              <p style={{ margin: '0 0 0.75rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ {r.rating} / 5</p>
+              <Link href={`/${r.cuisine}/${r.neighborhood}`} style={{
+                fontSize: '0.82rem', color: '#16a34a', textDecoration: 'none', fontWeight: '500'
+              }}>
+                View {r.cuisine.replace(/-/g, ' ')} in {r.neighborhood.replace(/-/g, ' ')} →
               </Link>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Advertise */}
-      <section style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '12px', padding: '2rem', textAlign: 'center', marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: '1.5rem', color: '#15803d' }}>🍽️ Own a Halal Restaurant?</h2>
-        <p style={{ color: '#555', margin: '0.5rem 0 1rem' }}>
-          Get featured at the top of your neighborhood listing. Reach thousands of halal food seekers in Chicago every month.
+      {/* Advertise Banner */}
+      <section style={{
+        background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '14px',
+        padding: '2rem', textAlign: 'center', marginBottom: '2rem'
+      }}>
+        <h2 style={{ fontSize: '1.4rem', color: '#15803d', marginTop: 0 }}>🍽️ Own a Halal Restaurant?</h2>
+        <p style={{ color: '#555', margin: '0.5rem 0 1.25rem' }}>
+          Get featured at the top of your neighborhood listing. Reach thousands of halal food seekers every month.
         </p>
-        <Link href="/advertise"
-          style={{ display: 'inline-block', background: '#16a34a', color: '#fff', padding: '0.75rem 2rem', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold' }}>
+        <Link href="/advertise" style={{
+          display: 'inline-block', background: '#16a34a', color: '#fff',
+          padding: '0.75rem 2rem', borderRadius: '8px', textDecoration: 'none',
+          fontWeight: '700', fontSize: '1rem'
+        }}>
           Get Featured — $29/mo
         </Link>
       </section>
 
       {/* Footer */}
-      <footer style={{ textAlign: 'center', color: '#aaa', fontSize: '0.85rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+      <footer style={{ textAlign: 'center', color: '#aaa', fontSize: '0.82rem', paddingTop: '1rem', borderTop: '1px solid #eee' }}>
         © {new Date().getFullYear()} ChicagoHalalRestaurants.com · All listings verified halal
       </footer>
 
