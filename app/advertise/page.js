@@ -9,7 +9,7 @@ const StandardMockup = () => (
   <div style={{ border: '1px solid #e5e7eb', borderRadius: '12px', padding: '1.25rem', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
       <h3 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: '700', color: '#111' }}>Your Restaurant Name</h3>
-      <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', fontSize: '0.72rem', fontWeight: '700', padding: '0.2rem 0.6rem', borderRadius: '20px', whiteSpace: 'nowrap' }}>✅ Halal Certified</span>
+      <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', fontSize: '0.72rem', fontWeight: '700', padding: '0.2rem 0.6rem', borderRadius: '20px', whiteSpace: 'nowrap' }}>✅ Zabihah Halal Certified</span>
     </div>
     <p style={{ margin: '0 0 0.25rem', color: '#555', fontSize: '0.85rem' }}>📍 123 Your Street, Chicago, IL 60659</p>
     <p style={{ margin: '0 0 0.25rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ 4.7 / 5</p>
@@ -22,7 +22,7 @@ const PremiumMockup = () => (
     <div style={{ position: 'absolute', top: '-13px', left: '1rem', background: '#16a34a', color: '#fff', fontSize: '0.72rem', fontWeight: '700', padding: '0.2rem 0.75rem', borderRadius: '20px' }}>⭐ FEATURED</div>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginTop: '0.25rem' }}>
       <h3 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: '700', color: '#111' }}>Your Restaurant Name</h3>
-      <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', fontSize: '0.72rem', fontWeight: '700', padding: '0.2rem 0.6rem', borderRadius: '20px', whiteSpace: 'nowrap' }}>✅ Halal Certified</span>
+      <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', fontSize: '0.72rem', fontWeight: '700', padding: '0.2rem 0.6rem', borderRadius: '20px', whiteSpace: 'nowrap' }}>✅ Zabihah Halal Certified</span>
     </div>
     <p style={{ margin: '0 0 0.25rem', color: '#555', fontSize: '0.85rem' }}>📍 123 Your Street, Chicago, IL 60659</p>
     <p style={{ margin: '0 0 0.25rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ 4.7 / 5</p>
