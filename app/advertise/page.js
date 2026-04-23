@@ -13,7 +13,7 @@ const StandardMockup = () => (
     </div>
     <p style={{ margin: '0 0 0.25rem', color: '#555', fontSize: '0.85rem' }}>📍 123 Your Street, Chicago, IL 60659</p>
     <p style={{ margin: '0 0 0.25rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ 4.7 / 5</p>
-    <p style={{ margin: '0', fontSize: '0.8rem', color: '#888' }}>✅ Halal Certified · 👨‍👩‍👧 Family Friendly · 🚗 Delivery Available</p>
+    <p style={{ margin: '0', fontSize: '0.8rem', color: '#888' }}>✅ Zabihah Halal Certified · 👨‍👩‍👧 Family Friendly · 🚗 Delivery Available</p>
   </div>
 )
 
@@ -26,7 +26,7 @@ const PremiumMockup = () => (
     </div>
     <p style={{ margin: '0 0 0.25rem', color: '#555', fontSize: '0.85rem' }}>📍 123 Your Street, Chicago, IL 60659</p>
     <p style={{ margin: '0 0 0.25rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ 4.7 / 5</p>
-    <p style={{ margin: '0 0 0.5rem', fontSize: '0.8rem', color: '#888' }}>✅ Halal Certified · 👨‍👩‍👧 Family Friendly · 🚗 Delivery Available</p>
+    <p style={{ margin: '0 0 0.5rem', fontSize: '0.8rem', color: '#888' }}>✅ Zabihah Halal Certified · 👨‍👩‍👧 Family Friendly · 🚗 Delivery Available</p>
     <div style={{ borderTop: '1px solid #bbf7d0', paddingTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
       <a style={{ fontSize: '0.82rem', color: '#16a34a', textDecoration: 'none', fontWeight: '600' }}>📞 (312) 555-0123</a>
       <span style={{ color: '#ccc' }}>·</span>
