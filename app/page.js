@@ -42,7 +42,10 @@ export default function Home() {
 
       {/* Hero */}
       <div style={{ textAlign: 'center', padding: '3rem 1rem', background: '#fff', borderRadius: '16px', marginBottom: '2rem', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
-        <div style={{ fontSize: '3rem' }}>🕌</div>
+
+<img src="/logo.png" alt="Chicago Halal Restaurants" style={{ width: '140px', height: '140px', objectFit: 'contain', marginBottom: '0.5rem' }} />
+
+
         <h1 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#111', margin: '0.5rem 0' }}>
           Chicago Halal Restaurants
         </h1>
