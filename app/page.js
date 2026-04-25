@@ -83,7 +83,7 @@ export default function Home() {
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.75rem' }}>
           {neighborhoods.map(n => (
-            <Link key={n.slug} href={`/middle-eastern/${n.slug}`} style={{
+            <Link key={n.slug} href={`/neighborhood/${n.slug}`} style={{
               display: 'block', padding: '0.85rem 1rem', background: '#fff',
               border: '1px solid #e5e7eb', borderRadius: '10px', textDecoration: 'none',
               color: '#222', fontWeight: '500', textAlign: 'center',
