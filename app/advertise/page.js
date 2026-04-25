@@ -48,12 +48,14 @@ const plans = [
     bg: '#f0fdf4',
     border: '#bbf7d0',
     features: [
-      '✅ Listed in halal directory',
-      '✅ Name, address & rating displayed',
-      '✅ Zabihah Halal certified badge',
-      '✅ Appears on cuisine + neighborhood pages',
-      '✅ Listed within 48 hours',
-      '✅ Cancel anytime',
+   '✅ Listed in halal directory',
+'✅ Name, address & rating displayed',
+'✅ Zabihah Halal certified badge',
+'✅ Appears on cuisine + neighborhood pages',
+'✅ Google SEO optimized listing',
+'✅ AEO ready — appear in ChatGPT & AI search answers',
+'✅ Listed within 48 hours',
+'✅ Cancel anytime',
     ],
     cta: 'Get Standard Listing',
     email: 'info@chicagohalalrestaurants.com?subject=Standard Listing Request'
@@ -67,14 +69,15 @@ const plans = [
     border: '#fde68a',
     badge: '🏆 Best Value',
     features: [
-      '✅ Everything in Standard',
-      '✅ Featured badge & priority placement',
-      '✅ Homepage spotlight section',
-      '✅ Phone number displayed',
-      '✅ Menu link included',
-      '✅ Social media links',
-      '✅ Listed within 12 hours',
-      '✅ Priority support',
+    '✅ Everything in Standard',
+'✅ Featured badge & priority placement',
+'✅ Homepage spotlight section',
+'✅ Phone number displayed',
+'✅ Menu link included',
+'✅ Social media links',
+'✅ Enhanced AEO — structured data markup added',
+'✅ Listed within 12 hours',
+'✅ Priority support',
     ],
     cta: 'Get Premium Listing',
     email: 'info@chicagohalalrestaurants.com?subject=Premium Listing Request'
@@ -121,7 +124,37 @@ export default function Advertise() {
           </div>
         ))}
       </div>
-
+{/* AEO Section */}
+<div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '2rem', marginBottom: '2.5rem' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+    <span style={{ fontSize: '2rem' }}>🤖</span>
+    <h2 style={{ fontSize: '1.3rem', fontWeight: '800', color: '#111', margin: 0 }}>
+      AEO — The Future of Search Is Here
+    </h2>
+  </div>
+  <p style={{ color: '#555', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '1rem' }}>
+    <strong>Answer Engine Optimization (AEO)</strong> is the hottest trend in digital marketing right now. 
+    When someone asks ChatGPT, Perplexity, Google AI Overview, or Siri <em>"where can I find halal Pakistani food in Naperville?"</em> — 
+    AI engines pull answers from trusted, well-structured directories like ours.
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+    {[
+      { icon: '🔍', title: 'Google AI Overview', desc: 'Appear in Google\'s AI-generated answers at the top of search results' },
+      { icon: '🤖', title: 'ChatGPT & Perplexity', desc: 'Get cited when AI assistants answer halal food questions' },
+      { icon: '📱', title: 'Siri & Alexa', desc: 'Show up when customers use voice search to find halal food near them' },
+      { icon: '⭐', title: 'Structured Data', desc: 'Premium listings get JSON-LD schema markup that AI engines trust most' },
+    ].map((item, i) => (
+      <div key={i} style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', padding: '1rem' }}>
+        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{item.icon}</div>
+        <h3 style={{ margin: '0 0 0.35rem', fontSize: '0.9rem', fontWeight: '700', color: '#111' }}>{item.title}</h3>
+        <p style={{ margin: 0, fontSize: '0.82rem', color: '#666' }}>{item.desc}</p>
+      </div>
+    ))}
+  </div>
+  <div style={{ background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '8px', padding: '0.75rem 1rem', fontSize: '0.88rem', color: '#92400e' }}>
+    💡 <strong>Why this matters:</strong> Traditional SEO gets you on page 1 of Google. AEO gets you in the actual AI answer — before page 1. Early movers win big.
+  </div>
+</div>
       {/* Listing Previews */}
       <div style={{ marginBottom: '3rem' }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#111', marginBottom: '0.5rem' }}>
