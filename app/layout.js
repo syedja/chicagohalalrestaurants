@@ -24,7 +24,10 @@ export const metadata = {
     images: ['https://www.chicagohalalrestaurants.com/logo.png'],
   },
 }
-
+icons: {
+  icon: '/favicon.ico',
+  apple: '/apple-touch-icon.png',
+},
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
