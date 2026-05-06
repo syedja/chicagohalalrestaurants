@@ -73,7 +73,7 @@ export default async function Page({ params }) {
           display: 'inline-block', background: '#16a34a', color: '#fff',
           padding: '0.6rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '600'
         }}>
-          Get Featured — $29/mo
+          Get Featured — $19/mo
         </Link>
       </div>
 

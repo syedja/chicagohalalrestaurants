@@ -4,14 +4,14 @@ import Link from 'next/link'
 const cuisines = [
   { slug: 'pakistani', label: '🍛 Pakistani' },
   { slug: 'indian', label: '🍲 Indian' },
-  { slug: 'mediterranean', label: '🥙 Mediterranean' },
+  { slug: 'mediterranean', label: '🥗 Mediterranean' },
   { slug: 'middle-eastern', label: '🧆 Middle Eastern' },
-  { slug: 'turkish', label: '🥗 Turkish' },
+  { slug: 'turkish', label: '🥙 Turkish' },
   { slug: 'lebanese', label: '🫓 Lebanese' },
   { slug: 'fried-chicken', label: '🍗 Fried Chicken' },
   { slug: 'somali', label: '🍚 Somali' },
   { slug: 'ethiopian', label: '🫕 Ethiopian' },
-{ slug: 'american', label: '🍔 American' },
+  { slug: 'american', label: '🍔 American' },
 ]
 
 const neighborhoods = [
@@ -42,10 +42,7 @@ export default function Home() {
 
       {/* Hero */}
       <div style={{ textAlign: 'center', padding: '3rem 1rem', background: '#fff', borderRadius: '16px', marginBottom: '2rem', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
-
-<img src="/logo.png" alt="Chicago Halal Restaurants" style={{ width: '140px', height: '140px', objectFit: 'contain', marginBottom: '0.5rem' }} />
-
-
+        <img src="/logo.png" alt="Chicago Halal Restaurants" style={{ width: '140px', height: '140px', objectFit: 'contain', marginBottom: '0.5rem' }} />
         <h1 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#111', margin: '0.5rem 0' }}>
           Chicago Halal Restaurants
         </h1>
@@ -98,11 +95,11 @@ export default function Home() {
       {/* Featured Restaurants */}
       <section style={{ marginBottom: '2.5rem' }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '1rem', color: '#111' }}>
-  Top Rated Halal Spots
-</h2>
-<p style={{ color: '#888', fontSize: '0.9rem', marginTop: '-0.75rem', marginBottom: '1rem' }}>
-  Highest rated halal restaurants, sweet shops, and snack spots across Chicago — all rated 4.4★ and above.
-</p>
+          Top Rated Halal Spots
+        </h2>
+        <p style={{ color: '#888', fontSize: '0.9rem', marginTop: '-0.75rem', marginBottom: '1rem' }}>
+          Highest rated halal restaurants across Chicago — all rated 4.4★ and above.
+        </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
           {featured.map((r, i) => (
             <div key={i} style={{
@@ -112,14 +109,62 @@ export default function Home() {
               <h3 style={{ margin: '0 0 0.35rem', fontSize: '1rem', fontWeight: '600', color: '#111' }}>{r.name}</h3>
               <p style={{ margin: '0 0 0.25rem', color: '#666', fontSize: '0.85rem' }}>{r.address}</p>
               <p style={{ margin: '0 0 0.75rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ {r.rating} / 5</p>
-              <Link href={`/${r.cuisine}/${r.neighborhood}`} style={{
-                fontSize: '0.82rem', color: '#16a34a', textDecoration: 'none', fontWeight: '500'
-              }}>
-                View {r.cuisine.replace(/-/g, ' ')} in {r.neighborhood.replace(/-/g, ' ')} →
-              </Link>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Link href={`/${r.cuisine}/${r.neighborhood}`} style={{
+                  fontSize: '0.82rem', color: '#16a34a', textDecoration: 'none', fontWeight: '500'
+                }}>
+                  View {r.cuisine.replace(/-/g, ' ')} in {r.neighborhood.replace(/-/g, ' ')} →
+                </Link>
+                <Link href={`/grade?q=${encodeURIComponent(r.name)}`} style={{
+                  fontSize: '0.78rem', color: '#9ca3af', textDecoration: 'none',
+                }}>
+                  Owner? →
+                </Link>
+              </div>
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Visibility Report CTA — for restaurant owners */}
+      <section style={{
+        background: '#fff',
+        border: '1px solid #e5e7eb',
+        borderRadius: '14px',
+        padding: '2rem',
+        marginBottom: '1.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '1.5rem',
+        flexWrap: 'wrap',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+      }}>
+        <div style={{ flex: 1, minWidth: '220px' }}>
+          <p style={{
+            display: 'inline-block',
+            fontSize: '11px', fontWeight: '700', letterSpacing: '0.07em',
+            textTransform: 'uppercase', color: '#15803d', background: '#dcfce7',
+            padding: '2px 10px', borderRadius: '20px', marginBottom: '0.6rem',
+          }}>
+            Free · Takes 10 seconds
+          </p>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#111', margin: '0 0 0.4rem' }}>
+            Own a restaurant on this list?
+          </h2>
+          <p style={{ fontSize: '0.9rem', color: '#6b7280', margin: 0, lineHeight: 1.5 }}>
+            See how visible you are to customers searching for halal food — and find out exactly what's missing from your listing.
+          </p>
+        </div>
+        <Link href="/grade" style={{
+          display: 'inline-block',
+          background: '#16a34a', color: '#fff',
+          padding: '0.75rem 1.5rem', borderRadius: '8px',
+          textDecoration: 'none', fontWeight: '600', fontSize: '0.95rem',
+          whiteSpace: 'nowrap', flexShrink: 0,
+        }}>
+          Get my free report →
+        </Link>
       </section>
 
       {/* Advertise Banner */}
@@ -142,7 +187,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer style={{ textAlign: 'center', color: '#aaa', fontSize: '0.82rem', paddingTop: '1rem', borderTop: '1px solid #eee' }}>
-        © {new Date().getFullYear()} ChicagoHalalRestaurants.com · All listings verified halal
+        © {new Date().getFullYear()} ChicagoHalalRestaurants.com · Halal status should be verified directly with each restaurant.
       </footer>
 
     </main>

@@ -35,7 +35,64 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body style={{ margin: 0, padding: 0, fontFamily: 'system-ui, sans-serif', background: '#fafafa' }}>
+
+        {/* Nav */}
+    <nav style={{
+  background: '#fff',
+  borderBottom: '1px solid #e5e7eb',
+  padding: '0 1rem',
+  position: 'sticky',
+  top: 0,
+  zIndex: 50,
+}}>
+  <div style={{
+    maxWidth: '960px',
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: '56px',
+  }}>
+    <a href="/" style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      textDecoration: 'none',
+      color: '#111',
+      fontWeight: '700',
+      fontSize: '15px',
+    }}>
+      <img src="/logo.png" alt="" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+    </a>
+
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <a href="/advertise" style={{
+        fontSize: '14px',
+        color: '#6b7280',
+        textDecoration: 'none',
+        padding: '6px 12px',
+        borderRadius: '6px',
+      }}>
+        Advertise
+      </a>
+      <a href="/grade" style={{
+        fontSize: '14px',
+        fontWeight: '600',
+        color: '#15803d',
+        textDecoration: 'none',
+        padding: '7px 14px',
+        borderRadius: '6px',
+        border: '1.5px solid #16a34a',
+        whiteSpace: 'nowrap',
+      }}>
+        Free Visibility Report
+      </a>
+    </div>
+  </div>
+</nav>
+
         {children}
+
       </body>
     </html>
   )
