@@ -3,7 +3,7 @@ import content from '../../data/content.json'
 import Link from 'next/link'
 
 export async function generateStaticParams() {
-  const combinations = []
+  const combinations = []; const cuisines = [...new Set(restaurants.map(r => r.cuisine))]; cuisines.forEach(c => combinations.push({ cuisine: c, neighborhood: "chicago" }))
   const seen = new Set()
   for (const r of restaurants) {
     const key = `${r.cuisine}-${r.neighborhood}`
@@ -29,7 +29,7 @@ export default async function Page({ params }) {
   const { cuisine, neighborhood } = await params
   const c = cuisine.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
   const n = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
-  const results = restaurants.filter(r => r.cuisine === cuisine && r.neighborhood === neighborhood)
+  const results = neighborhood === "chicago" ? restaurants.filter(r => r.cuisine === cuisine) : restaurants.filter(r => r.cuisine === cuisine && r.neighborhood === neighborhood)
   const intro = content[`${cuisine}|${neighborhood}`] || ''
 
   return (
