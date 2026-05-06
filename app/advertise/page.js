@@ -281,14 +281,26 @@ export default function Advertise() {
       <div style={{ textAlign: 'center', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '16px', padding: '2rem' }}>
         <h2 style={{ color: '#15803d', margin: '0 0 0.5rem' }}>Ready to reach more customers?</h2>
         <p style={{ color: '#555', margin: '0 0 1.25rem' }}>Join Chicago's only exclusively Zabihah halal restaurant directory.</p>
-        <a href="mailto:info@chicagohalalrestaurants.com" style={{
-          display: 'inline-block', background: '#16a34a', color: '#fff',
-          padding: '0.85rem 2.5rem', borderRadius: '8px', textDecoration: 'none',
-          fontWeight: '700', fontSize: '1rem'
-        }}>
-          Email Us to Get Started
-        </a>
-        <p style={{ color: '#aaa', fontSize: '0.82rem', marginTop: '0.75rem' }}>info@chicagohalalrestaurants.com</p>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '1rem' }}>
+          <a href="mailto:info@chicagohalalrestaurants.com" style={{
+            display: 'inline-block', background: '#16a34a', color: '#fff',
+            padding: '0.85rem 2rem', borderRadius: '8px', textDecoration: 'none',
+            fontWeight: '700', fontSize: '1rem'
+          }}>
+            📧 Email Us
+          </a>
+          <a href="https://wa.me/16302104365" target="_blank" style={{
+            display: 'inline-block', background: '#25d366', color: '#fff',
+            padding: '0.85rem 2rem', borderRadius: '8px', textDecoration: 'none',
+            fontWeight: '700', fontSize: '1rem'
+          }}>
+            💬 WhatsApp Us
+          </a>
+        </div>
+        <p style={{ color: '#555', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+          📞 Call or text us at <a href="tel:16302104365" style={{ color: '#16a34a', fontWeight: '600', textDecoration: 'none' }}>(630) 210-4365</a>
+        </p>
+        <p style={{ color: '#aaa', fontSize: '0.82rem', marginTop: '0.25rem' }}>WhatsApp · Text · Call — whichever is easiest for you</p>
       </div>
 
     </main>
