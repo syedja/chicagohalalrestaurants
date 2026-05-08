@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import restaurants from '@/data/restaurants.json'
+import restaurants from '@/app/data/restaurants.json'
 
 const BASE_URL = 'https://www.chicagohalalrestaurants.com'
 
