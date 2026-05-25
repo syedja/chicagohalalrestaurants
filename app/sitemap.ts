@@ -3,6 +3,10 @@ import restaurants from '@/app/data/restaurants.json'
 
 const BASE_URL = 'https://www.chicagohalalrestaurants.com'
 
+const blogPosts = [
+  'zabihah-halal-indian-pakistani-lombard-glendale-heights-devon-ave',
+]
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date()
 
@@ -20,7 +24,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    {
+      url: `${BASE_URL}/advertise`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
   ]
+
+  // Blog posts
+  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((slug) => ({
+    url: `${BASE_URL}/blog/${slug}`,
+    lastModified,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }))
 
   // Derive unique neighborhoods from actual data
   const uniqueNeighborhoods = [
@@ -31,7 +55,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ),
   ] as string[]
 
-  // /neighborhood/[neighborhood] — only neighborhoods that have restaurants
+  // /neighborhood/[neighborhood]
   const neighborhoodRoutes: MetadataRoute.Sitemap = uniqueNeighborhoods.map((neighborhood) => ({
     url: `${BASE_URL}/neighborhood/${neighborhood}`,
     lastModified,
@@ -51,7 +75,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ).values(),
   ]
 
-  // /[cuisine]/[neighborhood] — only combos that have at least one restaurant
+  // /[cuisine]/[neighborhood]
   const cuisineNeighborhoodRoutes: MetadataRoute.Sitemap = uniqueCombos.map(
     ({ cuisine, neighborhood }) => ({
       url: `${BASE_URL}/${cuisine}/${neighborhood}`,
@@ -61,9 +85,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   )
 
+  // /[cuisine]/chicago — one per unique cuisine
+  const uniqueCuisines = [
+    ...new Set(
+      restaurants
+        .map((r) => r.cuisine?.trim())
+        .filter(Boolean)
+    ),
+  ] as string[]
+
+  const chicagoRoutes: MetadataRoute.Sitemap = uniqueCuisines.map((cuisine) => ({
+    url: `${BASE_URL}/${cuisine}/chicago`,
+    lastModified,
+    changeFrequency: 'weekly' as const,
+    priority: 0.9,
+  }))
+
   return [
     ...staticRoutes,
+    ...blogRoutes,
     ...neighborhoodRoutes,
     ...cuisineNeighborhoodRoutes,
+    ...chicagoRoutes,
   ]
 }
