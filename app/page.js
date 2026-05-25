@@ -1,3 +1,4 @@
+import { homepageSchema } from '@/app/lib/schema'
 import restaurants from './data/restaurants.json'
 import Link from 'next/link'
 
@@ -36,9 +37,15 @@ export const metadata = {
 
 export default function Home() {
   const featured = restaurants.filter(r => r.rating >= 4.4).slice(0, 12)
+  const schemas = homepageSchema({ totalRestaurants: restaurants.length })
 
   return (
     <main style={{ maxWidth: '960px', margin: '0 auto', padding: '2rem 1rem' }}>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+      />
 
       {/* Hero */}
       <div style={{ textAlign: 'center', padding: '3rem 1rem', background: '#fff', borderRadius: '16px', marginBottom: '2rem', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
