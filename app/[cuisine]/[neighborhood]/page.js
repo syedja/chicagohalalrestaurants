@@ -1,3 +1,4 @@
+import { restaurantPageSchema } from '@/app/lib/schema'
 import restaurants from '../../data/restaurants.json'
 import content from '../../data/content.json'
 import Link from 'next/link'
@@ -29,11 +30,22 @@ export default async function Page({ params }) {
   const { cuisine, neighborhood } = await params
   const c = cuisine.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
   const n = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
-  const results = neighborhood === "chicago" ? restaurants.filter(r => r.cuisine === cuisine) : restaurants.filter(r => r.cuisine === cuisine && r.neighborhood === neighborhood)
+
+  const pageRestaurants = neighborhood === "chicago"
+    ? restaurants.filter(r => r.cuisine === cuisine)
+    : restaurants.filter(r => r.cuisine === cuisine && r.neighborhood === neighborhood)
+
   const intro = content[`${cuisine}|${neighborhood}`] || ''
+
+  const schemas = restaurantPageSchema({ cuisine, neighborhood, restaurants: pageRestaurants })
 
   return (
     <main style={{ maxWidth: '860px', margin: '0 auto', padding: '2rem 1rem', fontFamily: 'system-ui, sans-serif' }}>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+      />
 
       <Link href="/" style={{ color: '#16a34a', textDecoration: 'none', fontSize: '0.9rem' }}>← Back to Home</Link>
 
@@ -47,11 +59,11 @@ export default async function Page({ params }) {
         </p>
       )}
 
-      {results.length === 0 ? (
+      {pageRestaurants.length === 0 ? (
         <p style={{ color: '#888' }}>No listings yet for this area — check back soon!</p>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {results.map((r, i) => (
+          {pageRestaurants.map((r, i) => (
             <div key={i} style={{
               background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px',
               padding: '1.25rem', boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
