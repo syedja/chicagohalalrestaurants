@@ -61,14 +61,7 @@ export function restaurantPageSchema({ cuisine, neighborhood, restaurants }) {
         ...(r.hours       && { openingHours: r.hours }),
         ...(r.photo_url   && { image: r.photo_url }),
         ...(r.description && { description: r.description }),
-        ...(r.rating > 0  && {
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: r.rating,
-            bestRating: 5,
-            worstRating: 1,
-          },
-        }),
+  
         amenityFeature: [
           { '@type': 'LocationFeatureSpecification', name: 'Halal Food', value: true },
         ],
