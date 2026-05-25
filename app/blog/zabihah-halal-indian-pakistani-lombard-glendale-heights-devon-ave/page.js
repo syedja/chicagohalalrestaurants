@@ -327,14 +327,14 @@ export default function BlogPost() {
       <section style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '14px', padding: '2rem', textAlign: 'center', marginBottom: '2rem' }}>
         <h2 style={{ fontSize: '1.3rem', color: '#15803d', marginTop: 0 }}>Own a Zabihah Halal Restaurant?</h2>
         <p style={{ color: '#555', margin: '0.5rem 0 1.25rem', fontSize: '0.95rem' }}>
-          Get your HFSAA or HMS certification badge displayed on your listing. Reach thousands of diners searching for verified Zabihah halal food every month.
+          Already HFSAA or HMS certified? Display your badge on your listing.
         </p>
         <Link href="/advertise" style={{
           display: 'inline-block', background: '#16a34a', color: '#fff',
           padding: '0.75rem 2rem', borderRadius: '8px', textDecoration: 'none',
           fontWeight: '700', fontSize: '1rem'
         }}>
-          Get Verified — Plans from $19/mo
+          Get Listed — Plans from $19/mo
         </Link>
       </section>
 
