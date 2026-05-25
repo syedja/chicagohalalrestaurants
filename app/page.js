@@ -30,6 +30,15 @@ const neighborhoods = [
   { slug: 'lombard', label: 'Lombard' },
 ]
 
+const blogPosts = [
+  {
+    slug: 'zabihah-halal-indian-pakistani-lombard-glendale-heights-devon-ave',
+    title: 'Best Zabihah Halal Indian & Pakistani Restaurants in Lombard, Glendale Heights & Devon Ave',
+    excerpt: 'Find HFSAA and HMS-certified Zabihah halal Indian and Pakistani restaurants across three of Chicago\'s most food-rich neighborhoods.',
+    tags: ['Zabihah Halal', 'Indian & Pakistani', 'Chicago Suburbs'],
+  },
+]
+
 export const metadata = {
   title: 'Chicago Halal Restaurants | Find the Best Halal Food in Chicago',
   description: 'Find verified halal restaurants across Chicago and suburbs. Browse by cuisine or neighborhood.',
@@ -129,6 +138,56 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* From the Blog */}
+      <section style={{ marginBottom: '2.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#111', margin: 0 }}>
+            From the Blog
+          </h2>
+          <Link href="/blog" style={{ fontSize: '0.88rem', color: '#16a34a', textDecoration: 'none', fontWeight: '500' }}>
+            View all →
+          </Link>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {blogPosts.map(post => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <div style={{
+                background: '#fff',
+                border: '1px solid #e5e7eb',
+                borderRadius: '12px',
+                padding: '1.25rem 1.5rem',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                borderLeft: '4px solid #16a34a',
+              }}>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.6rem' }}>
+                  {post.tags.map(tag => (
+                    <span key={tag} style={{
+                      fontSize: '0.72rem', fontWeight: '600', background: '#dcfce7',
+                      color: '#15803d', padding: '2px 8px', borderRadius: '20px'
+                    }}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h3 style={{ margin: '0 0 0.4rem', fontSize: '1rem', fontWeight: '700', color: '#111', lineHeight: 1.4 }}>
+                  {post.title}
+                </h3>
+                <p style={{ margin: '0 0 0.6rem', fontSize: '0.88rem', color: '#555', lineHeight: 1.6 }}>
+                  {post.excerpt}
+                </p>
+                <span style={{ fontSize: '0.82rem', color: '#16a34a', fontWeight: '500' }}>
+                  Read more →
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
       </section>
