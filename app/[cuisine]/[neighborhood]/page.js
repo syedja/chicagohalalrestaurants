@@ -153,14 +153,23 @@ export async function generateMetadata({ params }) {
   const { cuisine, neighborhood } = await params
   const key = `${cuisine}|${neighborhood}`
   const meta = metaMap[key]
+  const canonicalUrl = `https://www.chicagohalalrestaurants.com/${cuisine}/${neighborhood}`
+
   if (meta) {
-    return { title: meta.title, description: meta.desc }
+    return {
+      title: meta.title,
+      description: meta.desc,
+      alternates: { canonical: canonicalUrl },
+      openGraph: { url: canonicalUrl },
+    }
   }
   const c = cuisine.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
   const n = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
   return {
     title: `Best Halal ${c} Restaurants in ${n}, Chicago`,
     description: `Find the top halal ${c} restaurants in ${n}, Chicago. Verified halal options with ratings and addresses.`,
+    alternates: { canonical: canonicalUrl },
+    openGraph: { url: canonicalUrl },
   }
 }
 
