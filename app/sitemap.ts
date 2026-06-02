@@ -101,11 +101,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }))
 
-  return [
+  const allRoutes = [
     ...staticRoutes,
     ...blogRoutes,
     ...neighborhoodRoutes,
     ...cuisineNeighborhoodRoutes,
     ...chicagoRoutes,
   ]
+
+  // Deduplicate by URL
+  const seen = new Set<string>()
+  const dedupedRoutes = allRoutes.filter((entry) => {
+    if (seen.has(entry.url)) return false
+    seen.add(entry.url)
+    return true
+  })
+
+  return dedupedRoutes
+  
 }
