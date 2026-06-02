@@ -64,16 +64,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   // Derive unique cuisine+neighborhood combos from actual data
-  const uniqueCombos = [
-    ...new Map(
-      restaurants
-        .filter((r) => r.cuisine?.trim() && r.neighborhood?.trim())
-        .map((r) => {
-          const key = `${r.cuisine.trim()}__${r.neighborhood.trim()}`
-          return [key, { cuisine: r.cuisine.trim(), neighborhood: r.neighborhood.trim() }]
-        })
-    ).values(),
-  ]
+// Only include combos with 3+ restaurants
+const comboCounts = new Map<string, number>()
+restaurants.forEach((r) => {
+  if (r.cuisine?.trim() && r.neighborhood?.trim()) {
+    const key = `${r.cuisine.trim()}__${r.neighborhood.trim()}`
+    comboCounts.set(key, (comboCounts.get(key) || 0) + 1)
+  }
+})
+
+const uniqueCombos = [...new Map(
+  restaurants
+    .filter((r) => {
+      const key = `${r.cuisine?.trim()}__${r.neighborhood?.trim()}`
+      return r.cuisine?.trim() && r.neighborhood?.trim() && (comboCounts.get(key) || 0) >= 3
+    })
+    .map((r) => {
+      const key = `${r.cuisine.trim()}__${r.neighborhood.trim()}`
+      return [key, { cuisine: r.cuisine.trim(), neighborhood: r.neighborhood.trim() }]
+    })
+).values()]
 
   // /[cuisine]/[neighborhood]
   const cuisineNeighborhoodRoutes: MetadataRoute.Sitemap = uniqueCombos.map(
