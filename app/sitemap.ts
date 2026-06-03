@@ -3,10 +3,6 @@ import restaurants from '@/app/data/restaurants.json'
 
 const BASE_URL = 'https://www.chicagohalalrestaurants.com'
 
-const blogPosts = [
-  'zabihah-halal-indian-pakistani-lombard-glendale-heights-devon-ave',
-]
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date()
 
