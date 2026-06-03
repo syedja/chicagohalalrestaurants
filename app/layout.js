@@ -102,9 +102,3 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
-
-export const metadata = {
-  metadataBase: new URL('https://www.chicagohalalrestaurants.com'),  // ← add this line
-  title: 'Chicago Halal Restaurants | Find the Best Halal Food in Chicago',
-  // ... rest stays the same
-}

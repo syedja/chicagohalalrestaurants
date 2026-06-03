@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import { restaurantPageSchema } from '@/app/lib/schema'
 import restaurants from '../../data/restaurants.json'
 import content from '../../data/content.json'
@@ -175,8 +176,13 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const { cuisine, neighborhood } = await params
+
+  const reservedRoutes = ['blog', 'neighborhood', 'advertise', 'grade', 'about', 'api']
+  if (reservedRoutes.includes(cuisine)) {
+    notFound()
+  }
+
   const c = cuisine.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
-  const n = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
 
   const pageRestaurants = neighborhood === "chicago"
     ? restaurants.filter(r => r.cuisine === cuisine)
