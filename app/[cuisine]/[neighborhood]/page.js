@@ -138,11 +138,18 @@ const metaMap = {
 }
 
 export async function generateStaticParams() {
-  const combinations = []; const cuisines = [...new Set(restaurants.map(r => r.cuisine))]; cuisines.forEach(c => combinations.push({ cuisine: c, neighborhood: "chicago" }))
+  const reservedRoutes = ['blog', 'neighborhood', 'advertise', 'grade', 'about', 'api']
+  const combinations = []
+  const cuisines = [...new Set(restaurants.map(r => r.cuisine))]
+  cuisines.forEach(c => {
+    if (!reservedRoutes.includes(c)) {
+      combinations.push({ cuisine: c, neighborhood: 'chicago' })
+    }
+  })
   const seen = new Set()
   for (const r of restaurants) {
     const key = `${r.cuisine}-${r.neighborhood}`
-    if (!seen.has(key)) {
+    if (!seen.has(key) && !reservedRoutes.includes(r.cuisine)) {
       seen.add(key)
       combinations.push({ cuisine: r.cuisine, neighborhood: r.neighborhood })
     }
@@ -164,6 +171,7 @@ export async function generateMetadata({ params }) {
       openGraph: { url: canonicalUrl },
     }
   }
+
   const c = cuisine.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
   const n = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
   return {
@@ -183,7 +191,7 @@ export default async function Page({ params }) {
   }
 
   const c = cuisine.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
-
+ const n = neighborhood.replace(/-/g, ' ').replace(/\b\w/g, x => x.toUpperCase())
   const pageRestaurants = neighborhood === "chicago"
     ? restaurants.filter(r => r.cuisine === cuisine)
     : restaurants.filter(r => r.cuisine === cuisine && r.neighborhood === neighborhood)
