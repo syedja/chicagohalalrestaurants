@@ -1,11 +1,34 @@
 import Link from 'next/link'
 
-export const metadata = {
-  title: 'Halal Food Blog | Chicago Halal Restaurants',
-  description: 'Guides, tips, and neighborhood spotlights for halal diners in Chicago and suburbs. Find Zabihah-certified restaurants, certification guides, and more.',
-}
-
 const blogPosts = [
+  {
+    slug: 'halal-mediterranean-bridgeview-oak-lawn',
+    title: 'Best Halal Mediterranean & Middle Eastern Restaurants in Bridgeview & Oak Lawn',
+    excerpt: 'The southwest suburbs are home to one of the most concentrated Arab-American communities in the Midwest. A guide to the best halal Mediterranean restaurants along the Harlem Avenue corridor and beyond.',
+    tags: ['Mediterranean', 'Middle Eastern', 'Southwest Suburbs'],
+    date: 'June 1, 2026',
+  },
+  {
+    slug: 'halal-restaurants-naperville-schaumburg',
+    title: 'Best Halal Restaurants in Naperville & Schaumburg, IL',
+    excerpt: 'Naperville and Schaumburg have become two of the strongest halal dining destinations in the Chicago suburbs. Afghan, Pakistani, Indian, Mediterranean, and Turkish options across both corridors.',
+    tags: ['Naperville', 'Schaumburg', 'Western Suburbs'],
+    date: 'June 1, 2026',
+  },
+  {
+    slug: 'halal-fried-chicken-burgers-chicago',
+    title: 'Best Halal Fried Chicken & Burgers in Chicago',
+    excerpt: 'From Nashville hot chicken to Pakistani-style broast, from smash burgers on Devon Avenue to wing spots in Oak Lawn — a guide to the best halal fried chicken and burger restaurants across Chicagoland.',
+    tags: ['Fried Chicken', 'Burgers', 'Chicago'],
+    date: 'June 1, 2026',
+  },
+  {
+    slug: 'get-halal-restaurant-listed-chicago',
+    title: 'How to Get Your Halal Restaurant Found Online in Chicago',
+    excerpt: 'A practical guide for halal restaurant owners on improving online visibility, getting verified listings, and preparing for AI search. Includes Google Business Profile tips and listing options.',
+    tags: ['Restaurant Owners', 'Online Visibility', 'Guide'],
+    date: 'June 1, 2026',
+  },
   {
     slug: 'zabihah-halal-indian-pakistani-lombard-glendale-heights-devon-ave',
     title: 'Best Zabihah Halal Indian & Pakistani Restaurants in Lombard, Glendale Heights & Devon Ave',
@@ -14,6 +37,11 @@ const blogPosts = [
     date: 'May 25, 2025',
   },
 ]
+
+export const metadata = {
+  title: 'Halal Food Blog | Chicago Halal Restaurants',
+  description: 'Guides, tips, and neighborhood spotlights for halal diners in Chicago and suburbs. Find Zabihah-certified restaurants, certification guides, and more.',
+}
 
 export default function BlogIndex() {
   return (
