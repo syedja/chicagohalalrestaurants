@@ -130,3 +130,11 @@ const uniqueCombos = [...new Map(
   return dedupedRoutes
   
 }
+
+const blogPosts = [
+  'zabihah-halal-indian-pakistani-lombard-glendale-heights-devon-ave',
+  'halal-mediterranean-bridgeview-oak-lawn',
+  'halal-restaurants-naperville-schaumburg',
+  'halal-fried-chicken-burgers-chicago',
+  'get-halal-restaurant-listed-chicago',
+]
