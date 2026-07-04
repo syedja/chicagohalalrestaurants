@@ -1,5 +1,10 @@
+import path from "path";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  turbopack: {
+    root: path.resolve(),
+  },
   async redirects() {
     return [
       {
@@ -11,5 +16,4 @@ const nextConfig = {
     ]
   },
 }
-
 export default nextConfig

@@ -1,0 +1,183 @@
+.ms-page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+  color: #1f2937;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.ms-page h1,
+.ms-page h2,
+.ms-page h3 {
+  color: #14532d;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.ms-hero {
+  text-align: center;
+  padding: 20px 0 44px;
+}
+
+.ms-badge {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #15803d;
+  background: #f0f7f1;
+  border: 1px solid #cde4d2;
+  border-radius: 99px;
+  padding: 5px 14px;
+  margin-bottom: 18px;
+}
+
+.ms-hero h1 {
+  font-size: 38px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+
+.ms-hero p {
+  max-width: 620px;
+  margin: 0 auto 24px;
+  color: #4b5563;
+  font-size: 17px;
+}
+
+.ms-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ms-btn {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 9px;
+  padding: 11px 22px;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.ms-btn.primary {
+  background: #15803d;
+  color: #fff;
+}
+
+.ms-btn.primary:hover {
+  background: #166534;
+}
+
+.ms-btn.ghost {
+  background: #fff;
+  border-color: #e8e5db;
+  color: #15803d;
+}
+
+.ms-btn.ghost:hover {
+  background: #f0f7f1;
+}
+
+.ms-section {
+  padding: 34px 0 8px;
+}
+
+.ms-section h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.ms-features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.ms-feature {
+  background: #fff;
+  border: 1px solid #e8e5db;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.ms-feature h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.ms-feature p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 15px;
+}
+
+.ms-steps {
+  padding-left: 22px;
+  margin: 0;
+}
+
+.ms-steps li {
+  margin-bottom: 12px;
+  color: #374151;
+}
+
+.ms-fine {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #6b7280;
+  border-left: 3px solid #15803d;
+  padding-left: 14px;
+}
+
+.ms-faq {
+  background: #fff;
+  border: 1px solid #e8e5db;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+
+.ms-faq summary {
+  font-weight: 600;
+  color: #14532d;
+  cursor: pointer;
+}
+
+.ms-faq p {
+  margin: 12px 0 4px;
+  color: #4b5563;
+}
+
+.ms-cta {
+  text-align: center;
+  background: #f0f7f1;
+  border: 1px solid #cde4d2;
+  border-radius: 14px;
+  padding: 36px 24px;
+  margin-top: 40px;
+}
+
+.ms-cta h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.ms-cta p {
+  color: #4b5563;
+  margin: 0 0 18px;
+}
+
+@media (max-width: 640px) {
+  .ms-hero h1 {
+    font-size: 29px;
+  }
+  .ms-features {
+    grid-template-columns: 1fr;
+  }
+}
