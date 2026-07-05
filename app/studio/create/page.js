@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { CAMPAIGNS, CAMPAIGN_CATEGORIES, getCampaign } from "../../../lib/studio/campaigns";
 import { getProfile, addHistory, apiPost } from "../../../lib/studio/storage";
 import ResultCards from "../../../components/studio/ResultCards";
+import GraphicsPanel from "../../../components/studio/GraphicsPanel";
 
 const PLATFORMS = [
   { id: "instagram", label: "Instagram" },
@@ -199,6 +200,12 @@ function CreateInner() {
         <div style={{ marginTop: 22 }}>
           <h2 className="studio-section-title">Ready to post</h2>
           <ResultCards content={content} />
+          <h2 className="studio-section-title">Promo graphic</h2>
+          <p className="studio-page-sub" style={{ marginBottom: 14 }}>
+            A branded image to post with your captions — your real details on your
+            template, sized for Instagram, WhatsApp status, or Facebook.
+          </p>
+          <GraphicsPanel profile={profile} campaign={campaign} details={details} />
         </div>
       ) : null}
     </div>

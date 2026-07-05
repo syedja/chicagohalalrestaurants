@@ -233,6 +233,47 @@ export default function Home() {
         </Link>
       </section>
 
+      {/* AI Marketing Studio CTA — Premium feature */}
+      <section style={{
+        background: '#fff',
+        border: '1px solid #e5e7eb',
+        borderRadius: '14px',
+        padding: '2rem',
+        marginBottom: '1.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '1.5rem',
+        flexWrap: 'wrap',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+      }}>
+        <div style={{ flex: 1, minWidth: '220px' }}>
+          <p style={{
+            display: 'inline-block',
+            fontSize: '11px', fontWeight: '700', letterSpacing: '0.07em',
+            textTransform: 'uppercase', color: '#15803d', background: '#dcfce7',
+            padding: '2px 10px', borderRadius: '20px', marginBottom: '0.6rem',
+          }}>
+            New · Premium feature
+          </p>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#111', margin: '0 0 0.4rem' }}>
+            AI Marketing Studio for your restaurant
+          </h2>
+          <p style={{ fontSize: '0.9rem', color: '#6b7280', margin: 0, lineHeight: 1.5 }}>
+            One-click Ramadan, Eid, and Jummah campaigns — posts and branded graphics written in your restaurant's voice. Included with Premium listings.
+          </p>
+        </div>
+        <Link href="/marketing-studio" style={{
+          display: 'inline-block',
+          background: '#16a34a', color: '#fff',
+          padding: '0.75rem 1.5rem', borderRadius: '8px',
+          textDecoration: 'none', fontWeight: '600', fontSize: '0.95rem',
+          whiteSpace: 'nowrap', flexShrink: 0,
+        }}>
+          See how it works →
+        </Link>
+      </section>
+
       {/* Advertise Banner */}
       <section style={{
         background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '14px',
