@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CAMPAIGNS, CAMPAIGN_CATEGORIES, getCampaign } from "../../../lib/studio/campaigns";
@@ -24,6 +24,7 @@ const LOADING_LINES = [
 
 function CreateInner() {
   const params = useSearchParams();
+  const detailRef = useRef(null);
   const [profile, setProfile] = useState(null);
   const [ready, setReady] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -37,7 +38,12 @@ function CreateInner() {
   useEffect(() => {
     setProfile(getProfile());
     const pre = params.get("c");
-    if (pre && getCampaign(pre)) setSelected(pre);
+    if (pre && getCampaign(pre)) {
+      setSelected(pre);
+      requestAnimationFrame(() => {
+        detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
     setReady(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -51,6 +57,9 @@ function CreateInner() {
     setContent(null);
     setError("");
     setDetails("");
+    requestAnimationFrame(() => {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
   function togglePlatform(id) {
@@ -135,7 +144,7 @@ function CreateInner() {
       ))}
 
       {campaign ? (
-        <div className="studio-card" style={{ marginTop: 26 }}>
+        <div className="studio-card" style={{ marginTop: 26 }} ref={detailRef}>
           <h2 style={{ fontSize: 20, marginBottom: 4 }}>{campaign.label}</h2>
           <p className="studio-help" style={{ marginBottom: 16 }}>
             {campaign.tagline}
