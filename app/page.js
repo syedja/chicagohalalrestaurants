@@ -13,6 +13,10 @@ const cuisines = [
   { slug: 'somali', label: '🍚 Somali' },
   { slug: 'ethiopian', label: '🫕 Ethiopian' },
   { slug: 'american', label: '🍔 American' },
+  { slug: 'afghan', label: '🥘 Afghan' },
+  { slug: 'asian', label: '🍜 Asian' },
+  { slug: 'mexican', label: '🌮 Mexican' },
+  { slug: 'nepali', label: '🥟 Nepali' },
 ]
 
 const neighborhoods = [
@@ -27,6 +31,7 @@ const neighborhoods = [
   { slug: 'logan-square', label: 'Logan Square' },
   { slug: 'glendale-heights', label: 'Glendale Heights' },
   { slug: 'orland-park', label: 'Orland Park' },
+  { slug: 'hyde-park', label: 'Hyde Park' },
   { slug: 'lombard', label: 'Lombard' },
 ]
 
@@ -66,7 +71,7 @@ export default function Home() {
           Find verified halal food across Chicago and suburbs
         </p>
         <p style={{ fontSize: '0.95rem', color: '#16a34a', fontWeight: '600' }}>
-          {restaurants.length}+ restaurants · {neighborhoods.length} neighborhoods · 9 cuisines
+          {restaurants.length}+ restaurants · {neighborhoods.length} neighborhoods · {cuisines.length} cuisines
         </p>
       </div>
 

@@ -2,7 +2,7 @@ import VisibilityReportClient from './VisibilityReportClient';
 
 export const metadata = {
   title: 'Free Restaurant Visibility Report | Chicago Halal Restaurants',
-  description: "See how visible your halal restaurant is to customers searching online. Get your free visibility report and find out exactly how to get more customers from Chicago's #1 halal directory.",
+  description: "See how visible your halal restaurant is to customers searching online. Get your free visibility report and find out exactly how to get more customers from Chicago's halal restaurant directory.",
 };
 
 export default function VisibilityReportPage({ searchParams }) {
@@ -66,7 +66,7 @@ export default function VisibilityReportPage({ searchParams }) {
       }}>
         {[
           { num: '280+', label: 'Restaurants listed' },
-          { num: '40+', label: 'Chicago neighborhoods' },
+          { num: '13', label: 'Chicago neighborhoods' },
           { num: 'Free', label: 'Visibility report' },
         ].map(({ num, label }) => (
           <div key={label} style={{ textAlign: 'center' }}>
