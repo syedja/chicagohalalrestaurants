@@ -740,3 +740,45 @@
     font-size: 14px;
   }
 }
+
+/* ---------- Graphic trio (three styles at once) ---------- */
+
+.studio-graphic-trio {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.studio-graphic-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #f6f5f0;
+  padding: 12px;
+}
+
+.studio-graphic-item canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.studio-graphic-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green-deep);
+}
+
+.studio-open-btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .studio-graphic-trio {
+    grid-template-columns: 1fr;
+  }
+}

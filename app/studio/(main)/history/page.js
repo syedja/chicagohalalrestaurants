@@ -156,7 +156,7 @@ export default function HistoryPage() {
                           Notes: {h.details}
                         </div>
                       ) : null}
-                      <ResultCards content={h.content} />
+                      <ResultCards content={h.content} profile={{}} />
                     </div>
                   ) : null}
                 </div>

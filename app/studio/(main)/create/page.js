@@ -213,11 +213,11 @@ function CreateInner() {
       {content ? (
         <div style={{ marginTop: 22 }}>
           <h2 className="studio-section-title">Ready to post</h2>
-          <ResultCards content={content} />
-          <h2 className="studio-section-title">Promo graphic</h2>
+          <ResultCards content={content} profile={profile || {}} />
+          <h2 className="studio-section-title">Matching promo graphics</h2>
           <p className="studio-page-sub" style={{ marginBottom: 14 }}>
-            A branded image to post with your captions — your real details on your
-            template, sized for Instagram, WhatsApp status, or Facebook.
+            Three ready-to-post styles with your real details — download the one you
+            like and attach it with your caption.
           </p>
           <GraphicsPanel profile={profile} campaign={campaign} details={details} />
         </div>
