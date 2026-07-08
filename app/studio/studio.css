@@ -27,6 +27,13 @@
   line-height: 1.6;
 }
 
+/* Bare variant: no sidebar, used by /studio/login and /studio/signup.
+   Keeps the same colors/fonts but renders as a simple centered block. */
+.studio-shell.studio-shell-bare {
+  display: block;
+  padding: 24px;
+}
+
 .studio-shell *,
 .studio-shell *::before,
 .studio-shell *::after {

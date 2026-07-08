@@ -3,12 +3,15 @@
 
 import { generateJSON, StudioAIError } from "../../../../lib/studio/aiProvider";
 import { buildReviewPrompt } from "../../../../lib/studio/prompts";
-import { checkAccess, unauthorized } from "../../../../lib/studio/serverAuth";
+import { getSessionFromRequest } from "../../../../lib/studio/session";
 
 export const maxDuration = 60;
 
 export async function POST(request) {
-  if (!checkAccess(request)) return unauthorized();
+  const session = getSessionFromRequest(request);
+  if (!session) {
+    return Response.json({ ok: false, error: "Please log in again." }, { status: 401 });
+  }
 
   let body;
   try {

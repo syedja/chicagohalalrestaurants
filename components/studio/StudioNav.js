@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { checkAuth, logout } from "../../lib/studio/authClient";
 
 const icon = {
   home: (
@@ -35,6 +37,17 @@ const LINKS = [
 
 export default function StudioNav() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    checkAuth().then(setUser);
+  }, []);
+
+  async function handleLogout() {
+    await logout();
+    router.push("/studio/login");
+  }
   return (
     <nav className="studio-nav" aria-label="Studio">
       <div className="studio-brand">
@@ -56,7 +69,17 @@ export default function StudioNav() {
       </div>
       <div className="studio-nav-foot">
         <span className="studio-premium-badge">Premium</span>
-        <div>Included with your Premium listing on chicagohalalrestaurants.com</div>
+        <div style={{ marginBottom: 10 }}>
+          {user?.restaurantName || user?.email || "Included with your Premium listing"}
+        </div>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="studio-btn ghost small"
+          style={{ width: "100%" }}
+        >
+          Log out
+        </button>
       </div>
     </nav>
   );

@@ -3,10 +3,10 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { CAMPAIGNS, CAMPAIGN_CATEGORIES, getCampaign } from "../../../lib/studio/campaigns";
-import { getProfile, addHistory, apiPost } from "../../../lib/studio/storage";
-import ResultCards from "../../../components/studio/ResultCards";
-import GraphicsPanel from "../../../components/studio/GraphicsPanel";
+import { CAMPAIGNS, CAMPAIGN_CATEGORIES, getCampaign } from "../../../../lib/studio/campaigns";
+import { getProfile, addHistory, apiPost } from "../../../../lib/studio/storage";
+import ResultCards from "../../../../components/studio/ResultCards";
+import GraphicsPanel from "../../../../components/studio/GraphicsPanel";
 
 const PLATFORMS = [
   { id: "instagram", label: "Instagram" },
@@ -36,7 +36,7 @@ function CreateInner() {
   const [lineIndex, setLineIndex] = useState(0);
 
   useEffect(() => {
-    setProfile(getProfile());
+    getProfile().then(setProfile);
     const pre = params.get("c");
     if (pre && getCampaign(pre)) {
       setSelected(pre);
@@ -89,14 +89,19 @@ function CreateInner() {
         platforms,
       });
       setContent(data.content);
-      addHistory({
-        ts: Date.now(),
-        campaignId: campaign.id,
-        campaignLabel: campaign.label,
-        details,
-        platforms,
-        content: data.content,
-      });
+      try {
+        await addHistory({
+          ts: Date.now(),
+          campaignId: campaign.id,
+          campaignLabel: campaign.label,
+          details,
+          platforms,
+          content: data.content,
+        });
+      } catch {
+        // Non-fatal: the content still shows on screen even if saving
+        // to history fails for some reason.
+      }
     } catch (err) {
       setError(err.message);
     } finally {

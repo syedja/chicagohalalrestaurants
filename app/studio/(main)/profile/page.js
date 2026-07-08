@@ -2,33 +2,49 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import ProfileForm from "../../../components/studio/ProfileForm";
+import ProfileForm from "../../../../components/studio/ProfileForm";
 import {
   EMPTY_PROFILE,
   getProfile,
   saveProfile,
   profileCompleteness,
-} from "../../../lib/studio/storage";
+} from "../../../../lib/studio/storage";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(EMPTY_PROFILE);
   const [saved, setSaved] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const existing = getProfile();
-    if (existing) setProfile(existing);
-    setReady(true);
+    let cancelled = false;
+    getProfile().then((existing) => {
+      if (cancelled) return;
+      if (existing) setProfile(existing);
+      setReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (!ready) return null;
 
   const completeness = profileCompleteness(profile);
 
-  function save() {
-    saveProfile(profile);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  async function save() {
+    setError("");
+    setBusy(true);
+    try {
+      await saveProfile(profile);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      setError(err.message || "Couldn't save your profile. Try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -58,12 +74,13 @@ export default function ProfilePage() {
 
       <div className="studio-card">
         <ProfileForm value={profile} onChange={setProfile} />
+        {error ? <div className="studio-alert">{error}</div> : null}
         <div className="studio-row" style={{ marginTop: 18 }}>
-          <button type="button" className="studio-btn primary" onClick={save}>
-            {saved ? "Saved" : "Save profile"}
+          <button type="button" className="studio-btn primary" onClick={save} disabled={busy}>
+            {busy ? "Saving…" : saved ? "Saved" : "Save profile"}
           </button>
           <span className="studio-kicker">
-            Saved on this device. Account sync is on the roadmap.
+            Saved to your account — available from any device you log in on.
           </span>
         </div>
       </div>

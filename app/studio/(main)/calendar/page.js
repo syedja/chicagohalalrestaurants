@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { upcomingOccasions, formatOccasionDate } from "../../../lib/studio/occasions";
+import { upcomingOccasions, formatOccasionDate } from "../../../../lib/studio/occasions";
 
 export default function CalendarPage() {
   const [occasions, setOccasions] = useState([]);

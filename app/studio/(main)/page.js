@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getProfile, getHistory, profileCompleteness } from "../../lib/studio/storage";
-import { CAMPAIGNS } from "../../lib/studio/campaigns";
-import { upcomingOccasions, formatOccasionDate } from "../../lib/studio/occasions";
+import { getProfile, getHistory, profileCompleteness } from "../../../lib/studio/storage";
+import { CAMPAIGNS } from "../../../lib/studio/campaigns";
+import { upcomingOccasions, formatOccasionDate } from "../../../lib/studio/occasions";
 
 const FEATURED = ["todays-special", "jummah-lunch", "ramadan-iftar", "catering-corporate"];
 
@@ -15,10 +15,19 @@ export default function StudioDashboard() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setProfile(getProfile());
-    setHistory(getHistory().slice(0, 3));
-    setOccasions(upcomingOccasions(new Date(), 12).slice(0, 3));
-    setReady(true);
+    let cancelled = false;
+    async function load() {
+      const [p, h] = await Promise.all([getProfile(), getHistory()]);
+      if (cancelled) return;
+      setProfile(p);
+      setHistory(h.slice(0, 3));
+      setOccasions(upcomingOccasions(new Date(), 12).slice(0, 3));
+      setReady(true);
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (!ready) return null;
@@ -29,7 +38,7 @@ export default function StudioDashboard() {
     <div>
       {profile?.name ? (
         <div className="studio-hero">
-          <div className="studio-eyebrow" style={{ color: "#e8cf8a" }}>
+          <div className="studio-eyebrow">
             Marketing Studio
           </div>
           <h1>{profile.name}</h1>
@@ -48,7 +57,7 @@ export default function StudioDashboard() {
         </div>
       ) : (
         <div className="studio-hero">
-          <div className="studio-eyebrow" style={{ color: "#e8cf8a" }}>
+          <div className="studio-eyebrow">
             Welcome to your marketing studio
           </div>
           <h1>Set up in about 60 seconds</h1>

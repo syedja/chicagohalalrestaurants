@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import ProfileForm from "../../../components/studio/ProfileForm";
-import { EMPTY_PROFILE, saveProfile, apiPost } from "../../../lib/studio/storage";
+import ProfileForm from "../../../../components/studio/ProfileForm";
+import { EMPTY_PROFILE, saveProfile, apiPost } from "../../../../lib/studio/storage";
 
 const LOADING_LINES = [
   "Reading your website…",
@@ -55,9 +55,14 @@ export default function OnboardingPage() {
     }
   }
 
-  function save() {
-    saveProfile(profile);
-    router.push("/studio");
+  async function save() {
+    try {
+      await saveProfile(profile);
+      router.push("/studio");
+    } catch (err) {
+      setError(err.message || "Couldn't save your profile. Try again.");
+      setStage("review");
+    }
   }
 
   if (stage === "loading") {

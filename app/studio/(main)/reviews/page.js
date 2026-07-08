@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getProfile, apiPost } from "../../../lib/studio/storage";
+import Link from "next/link";
+import { getProfile, apiPost, addReviewHistory } from "../../../../lib/studio/storage";
 
 export default function ReviewsPage() {
   const [profile, setProfile] = useState(null);
@@ -14,7 +15,7 @@ export default function ReviewsPage() {
   const [copied, setCopied] = useState("");
 
   useEffect(() => {
-    setProfile(getProfile());
+    getProfile().then(setProfile);
   }, []);
 
   async function generate() {
@@ -33,6 +34,19 @@ export default function ReviewsPage() {
         tone,
       });
       setResult(data);
+      try {
+        await addReviewHistory({
+          ts: Date.now(),
+          reviewText,
+          rating,
+          tone,
+          response: data.response,
+          short: data.short,
+        });
+      } catch {
+        // Non-fatal: the reply still shows on screen even if saving
+        // to history fails for some reason.
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -103,6 +117,9 @@ export default function ReviewsPage() {
 
       {result ? (
         <div style={{ marginTop: 22 }}>
+          <div className="studio-note">
+            Saved to your <Link href="/studio/history">History</Link> — come back anytime to find it.
+          </div>
           <div className="studio-result">
             <div className="studio-result-head">
               <span className="studio-result-platform">Full reply</span>
