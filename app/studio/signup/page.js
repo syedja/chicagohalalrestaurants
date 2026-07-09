@@ -29,7 +29,7 @@ export default function SignupPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Couldn't create your account.");
-      router.push("/studio");
+      router.push("/studio/billing");
     } catch (err) {
       setError(err.message);
       setBusy(false);

@@ -213,3 +213,119 @@ review; this is fixed with `COALESCE(..., '[]'::jsonb)` in both delete routes.
   nothing yet that starts a 7-day clock or cuts off access automatically.
   That's the natural next step once you're ready to formalize the free
   trial.
+
+---
+
+## Update: Trial & Billing (Stripe + PayPal)
+
+New signups now go through a billing step before reaching the Studio: Free
+(basic listing, no Studio access, no account needed) or Premium ($19/month,
+30-day free trial via Stripe or PayPal). Only Premium goes through this
+billing flow — Free doesn't require payment or an account at all. The `(main)` layout guard checks
+billing status on every page load and redirects to `/studio/billing` if
+there's no active trial or subscription.
+
+**Important — this changes your own test account too.** Any account created
+before this update (including the one you tested with) will now be sent to
+`/studio/billing` the next time it loads a Studio page, since it has no
+`subscription_status` yet. That's correct behavior, but expect it.
+
+### What was verified before delivery, and what wasn't
+
+Verified for real, against a live local server: signup → billing-gate
+blocks access → a genuinely signed Stripe webhook (signed with Stripe's own
+SDK, not a fake) arrives at the real webhook route → signature verifies →
+database updates → gate opens → tampered signatures are still rejected.
+The Postgres migration was also tested against existing account data to
+confirm nothing breaks for accounts created before billing existed.
+
+**Not verified, and can't be from here:** an actual completed checkout on
+either Stripe's or PayPal's real hosted payment page — that requires real
+merchant accounts, which only you can create. The PayPal webhook signature
+verification path also couldn't be tested against PayPal's real
+verification API for the same reason (Stripe's verification is a local
+crypto check we could simulate exactly; PayPal's requires calling their
+live API). Budget time for a real first-checkout test once your accounts
+are set up — there's a reasonable chance something needs a small fix, the
+same way Neon did.
+
+### Environment variables to add
+
+```
+# Stripe
+STRIPE_SECRET_KEY=sk_live_...            # or sk_test_... while testing
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_PRICE_PREMIUM=price_...   # only one plan now — Free needs no Stripe price
+
+# PayPal
+PAYPAL_CLIENT_ID=...
+PAYPAL_CLIENT_SECRET=...
+PAYPAL_ENV=live                          # or omit/"sandbox" while testing
+PAYPAL_PLAN_PREMIUM=P-...        # only one plan now — Free needs no PayPal plan
+PAYPAL_WEBHOOK_ID=...
+
+# Both
+NEXT_PUBLIC_SITE_URL=https://www.chicagohalalrestaurants.com
+```
+
+### Stripe setup (dashboard.stripe.com)
+
+1. Create a Stripe account if you don't have one (free).
+2. **Products → Add product** — create one: "Premium" ($19/month, recurring).
+   Stripe generates a **Price ID** (`price_...`) — copy it into
+   `STRIPE_PRICE_PREMIUM`.
+3. **Developers → API keys** — copy the **Secret key** into
+   `STRIPE_SECRET_KEY`. Start with the test-mode key (toggle in the
+   dashboard) until you've done a real test checkout, then switch to live.
+4. **Developers → Webhooks → Add endpoint**:
+   - URL: `https://www.chicagohalalrestaurants.com/api/studio/billing/stripe-webhook`
+   - Events to send: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.created`, `customer.subscription.deleted`, `invoice.payment_failed`
+   - After creating it, Stripe shows a **Signing secret** (`whsec_...`) — copy into `STRIPE_WEBHOOK_SECRET`.
+
+### PayPal setup (developer.paypal.com)
+
+1. Create a PayPal Developer account if you don't have one (free) — this is
+   different from a personal/regular PayPal account.
+2. **Apps & Credentials → Create App** — this gives you a **Client ID** and
+   **Secret**. Copy into `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET`. Start
+   in Sandbox mode (default) until you've tested a real checkout, then
+   create a live app and switch `PAYPAL_ENV=live`.
+3. Creating the subscription Plan requires PayPal's API directly (there
+   isn't a simple dashboard button for plans with trial periods) — this is
+   the one place you'll need to run an API call yourself, or ask me to walk
+   you through it once you have your Client ID/Secret. The plan needs a
+   `TRIAL` billing cycle (1 cycle, 30 days, $0) followed by a `REGULAR`
+   cycle at $19/month. Save the resulting **Plan ID** (`P-...`) into
+   `PAYPAL_PLAN_PREMIUM`.
+4. **Apps & Credentials → your app → Webhooks → Add Webhook**:
+   - URL: `https://www.chicagohalalrestaurants.com/api/studio/billing/paypal-webhook`
+   - Events: `BILLING.SUBSCRIPTION.ACTIVATED`, `BILLING.SUBSCRIPTION.CANCELLED`, `BILLING.SUBSCRIPTION.SUSPENDED`, `PAYMENT.SALE.COMPLETED`, `PAYMENT.SALE.DENIED`
+   - After creating it, PayPal shows a **Webhook ID** — copy into `PAYPAL_WEBHOOK_ID`.
+
+### New database columns
+
+`ensureSchema()` now also adds (via `ALTER TABLE ... ADD COLUMN IF NOT
+EXISTS`, safe on existing data): `plan`, `payment_provider`,
+`subscription_status`, `trial_ends_at`, `current_period_end`,
+`stripe_customer_id`, `stripe_subscription_id`, `paypal_subscription_id`.
+No manual migration needed — it runs automatically on the next request.
+
+### How access is gated
+
+`subscription_status` of `trialing` or `active` means full Studio access.
+Anything else — `null` (never subscribed), `canceled`, or `past_due` —
+sends the owner to `/studio/billing`. This check runs on every Studio page
+load via `/api/studio/billing/status`, so a canceled or failed-payment
+subscription locks out access automatically, not just at signup.
+
+### Known limitations of this version
+
+- No self-serve "change plan" or "cancel" button yet inside the Studio —
+  for now, cancellations happen directly in Stripe's or PayPal's own
+  customer portal, or you handle it manually. A self-serve billing
+  management page is a reasonable next addition.
+- No self-serve upgrade/downgrade flow between Free and Premium beyond signup —
+  each provider supports this, just not wired up yet.
+- PayPal plan creation isn't automated in this build (see step 3 above) —
+  it's a one-time setup you'll do (or I'll walk you through) once, not a
+  recurring task.

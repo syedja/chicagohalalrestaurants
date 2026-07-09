@@ -5,15 +5,14 @@ export const metadata = {
   description: 'Get your certified Zabihah halal restaurant featured on ChicagoHalalRestaurants.com.',
 }
 
-const StandardMockup = () => (
+const FreeMockup = () => (
   <div style={{ border: '1px solid #e5e7eb', borderRadius: '12px', padding: '1.25rem', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
       <h3 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: '700', color: '#111' }}>Your Restaurant Name</h3>
       <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', fontSize: '0.72rem', fontWeight: '700', padding: '0.2rem 0.6rem', borderRadius: '20px', whiteSpace: 'nowrap' }}>✅ Zabihah Halal Certified</span>
     </div>
     <p style={{ margin: '0 0 0.25rem', color: '#555', fontSize: '0.85rem' }}>📍 123 Your Street, Chicago, IL 60659</p>
-    <p style={{ margin: '0 0 0.25rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ 4.7 / 5</p>
-    <p style={{ margin: '0', fontSize: '0.8rem', color: '#888' }}>✅ Zabihah Halal Certified · 👨‍👩‍👧 Family Friendly · 🚗 Delivery Available</p>
+    <p style={{ margin: '0', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ 4.7 / 5</p>
   </div>
 )
 
@@ -25,62 +24,53 @@ const PremiumMockup = () => (
       <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', fontSize: '0.72rem', fontWeight: '700', padding: '0.2rem 0.6rem', borderRadius: '20px', whiteSpace: 'nowrap' }}>✅ Zabihah Halal Certified</span>
     </div>
     <p style={{ margin: '0 0 0.25rem', color: '#555', fontSize: '0.85rem' }}>📍 123 Your Street, Chicago, IL 60659</p>
-    <p style={{ margin: '0 0 0.25rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ 4.7 / 5</p>
-    <p style={{ margin: '0 0 0.5rem', fontSize: '0.8rem', color: '#888' }}>✅ Zabihah Halal Certified · 👨‍👩‍👧 Family Friendly · 🚗 Delivery Available</p>
+    <p style={{ margin: '0 0 0.5rem', color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ 4.7 / 5</p>
     <div style={{ borderTop: '1px solid #bbf7d0', paddingTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
       <a style={{ fontSize: '0.82rem', color: '#16a34a', textDecoration: 'none', fontWeight: '600' }}>📞 (312) 555-0123</a>
       <span style={{ color: '#ccc' }}>·</span>
       <a style={{ fontSize: '0.82rem', color: '#16a34a', textDecoration: 'none', fontWeight: '600' }}>🌐 yourwebsite.com</a>
       <span style={{ color: '#ccc' }}>·</span>
       <a style={{ fontSize: '0.82rem', color: '#16a34a', textDecoration: 'none', fontWeight: '600' }}>📋 View Menu</a>
-      <span style={{ color: '#ccc' }}>·</span>
-      <a style={{ fontSize: '0.82rem', color: '#16a34a', textDecoration: 'none', fontWeight: '600' }}>Instagram</a>
     </div>
   </div>
 )
 
 const plans = [
   {
-    name: 'Standard',
-    price: '$19',
-    period: '/month',
+    name: 'Free',
+    price: '$0',
+    period: '',
     color: '#16a34a',
     bg: '#f0fdf4',
     border: '#bbf7d0',
     features: [
-   '✅ Listed in halal directory',
-'✅ Name, address & rating displayed',
-'✅ Zabihah Halal certified badge',
-'✅ Appears on cuisine + neighborhood pages',
-'✅ Google SEO optimized listing',
-'✅ AEO ready — appear in ChatGPT & AI search answers',
-'✅ Listed within 48 hours',
-'✅ Cancel anytime',
+      '✅ Listed in halal directory',
+      '✅ Name, address & rating displayed',
+      '✅ Zabihah Halal certified badge',
+      '✅ Appears on cuisine + neighborhood pages',
     ],
-    cta: 'Get Standard Listing',
-    email: 'info@chicagohalalrestaurants.com?subject=Standard Listing Request'
+    cta: 'Get Listed Free',
+    email: 'info@chicagohalalrestaurants.com?subject=Free Listing Request'
   },
   {
     name: 'Premium',
-    price: '$49',
+    price: '$19',
     period: '/month',
     color: '#d97706',
     bg: '#fffbeb',
     border: '#fde68a',
     badge: '🏆 Best Value',
     features: [
-    '✅ Everything in Standard',
-'✅ Featured badge & priority placement',
-'✅ Homepage spotlight section',
-'✅ Phone number displayed',
-'✅ Menu link included',
-'✅ Social media links',
-'✅ Enhanced AEO — structured data markup added',
-'✅ Listed within 12 hours',
-'✅ Priority support',
+      '✅ Everything in Free',
+      '✅ Featured badge & priority placement',
+      '✅ Homepage spotlight section',
+      '✅ Phone, menu & social links displayed',
+      '✅ AI search ready (ChatGPT, Google AI, Perplexity)',
+      '✅ Full AI Marketing Studio access',
+      '✅ 30-day free trial, cancel anytime',
     ],
-    cta: 'Get Premium Listing',
-    email: 'info@chicagohalalrestaurants.com?subject=Premium Listing Request'
+    cta: 'Start Free Trial',
+    href: '/studio/signup',
   }
 ]
 
@@ -89,7 +79,6 @@ const certifications = [
   { name: 'HMS', full: 'Halal Monitoring Services' },
   { name: 'ISWA', full: 'Islamic Society of the Washington Area' },
   { name: 'MCG', full: 'Muslim Consumer Group' },
-  { name: 'Zabihah.com', full: 'Zabihah Verified Listing' },
 ]
 
 export default function Advertise() {
@@ -103,8 +92,9 @@ export default function Advertise() {
           🍽️ Get Your Restaurant Featured
         </h1>
         <p style={{ fontSize: '1.1rem', color: '#555', maxWidth: '600px', margin: '0 auto 0.75rem' }}>
-          Chicago Halal Restaurants is the only Chicago directory exclusively listing
-          <strong> Zabihah certified halal</strong> restaurants — verified by HFSAA, HMS, and other credible Islamic certification bodies.
+          Chicago Halal Restaurants is a dedicated Zabihah halal restaurant directory for
+          Chicago and the suburbs — verified by HFSAA, HMS, and other credible Islamic
+          certification bodies.
         </p>
         <div style={{ display: 'inline-block', background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '8px', padding: '0.5rem 1.25rem', fontSize: '0.9rem', color: '#92400e', fontWeight: '600' }}>
           ⚠️ We only accept restaurants with credible Zabihah halal certification
@@ -116,7 +106,7 @@ export default function Advertise() {
         {[
           { number: '280+', label: 'Halal Listings' },
           { number: '13', label: 'Neighborhoods' },
-          { number: '9', label: 'Cuisine Categories' },
+          { number: '14', label: 'Cuisine Categories' },
         ].map((stat, i) => (
           <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', padding: '1.25rem' }}>
             <div style={{ fontSize: '1.8rem', fontWeight: '800', color: '#16a34a' }}>{stat.number}</div>
@@ -124,37 +114,7 @@ export default function Advertise() {
           </div>
         ))}
       </div>
-{/* AEO Section */}
-<div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '2rem', marginBottom: '2.5rem' }}>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-    <span style={{ fontSize: '2rem' }}>🤖</span>
-    <h2 style={{ fontSize: '1.3rem', fontWeight: '800', color: '#111', margin: 0 }}>
-      AEO — The Future of Search Is Here
-    </h2>
-  </div>
-  <p style={{ color: '#555', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '1rem' }}>
-    <strong>Answer Engine Optimization (AEO)</strong> is the hottest trend in digital marketing right now. 
-    When someone asks ChatGPT, Perplexity, Google AI Overview, or Siri <em>"where can I find halal Pakistani food in Naperville?"</em> — 
-    AI engines pull answers from trusted, well-structured directories like ours.
-  </p>
-  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
-    {[
-      { icon: '🔍', title: 'Google AI Overview', desc: 'Appear in Google\'s AI-generated answers at the top of search results' },
-      { icon: '🤖', title: 'ChatGPT & Perplexity', desc: 'Get cited when AI assistants answer halal food questions' },
-      { icon: '📱', title: 'Siri & Alexa', desc: 'Show up when customers use voice search to find halal food near them' },
-      { icon: '⭐', title: 'Structured Data', desc: 'Premium listings get JSON-LD schema markup that AI engines trust most' },
-    ].map((item, i) => (
-      <div key={i} style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', padding: '1rem' }}>
-        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{item.icon}</div>
-        <h3 style={{ margin: '0 0 0.35rem', fontSize: '0.9rem', fontWeight: '700', color: '#111' }}>{item.title}</h3>
-        <p style={{ margin: 0, fontSize: '0.82rem', color: '#666' }}>{item.desc}</p>
-      </div>
-    ))}
-  </div>
-  <div style={{ background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '8px', padding: '0.75rem 1rem', fontSize: '0.88rem', color: '#92400e' }}>
-    💡 <strong>Why this matters:</strong> Traditional SEO gets you on page 1 of Google. AEO gets you in the actual AI answer — before page 1. Early movers win big.
-  </div>
-</div>
+
       {/* Listing Previews */}
       <div style={{ marginBottom: '3rem' }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#111', marginBottom: '0.5rem' }}>
@@ -167,13 +127,13 @@ export default function Advertise() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
           <div>
             <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '0.6rem 1rem', marginBottom: '0.75rem', display: 'inline-block' }}>
-              <span style={{ fontWeight: '700', color: '#16a34a', fontSize: '0.85rem' }}>Standard Listing — $19/mo</span>
+              <span style={{ fontWeight: '700', color: '#16a34a', fontSize: '0.85rem' }}>Free Listing</span>
             </div>
-            <StandardMockup />
+            <FreeMockup />
           </div>
           <div>
             <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '0.6rem 1rem', marginBottom: '0.75rem', display: 'inline-block' }}>
-              <span style={{ fontWeight: '700', color: '#d97706', fontSize: '0.85rem' }}>🏆 Premium Listing — $49/mo</span>
+              <span style={{ fontWeight: '700', color: '#d97706', fontSize: '0.85rem' }}>🏆 Premium — $19/mo</span>
             </div>
             <PremiumMockup />
           </div>
@@ -207,13 +167,23 @@ export default function Advertise() {
                 <li key={j} style={{ fontSize: '0.9rem', color: '#333' }}>{f}</li>
               ))}
             </ul>
-            <a href={`mailto:${plan.email}`} style={{
-              display: 'block', textAlign: 'center', background: plan.color,
-              color: '#fff', padding: '0.85rem', borderRadius: '8px',
-              textDecoration: 'none', fontWeight: '700', fontSize: '1rem'
-            }}>
-              {plan.cta}
-            </a>
+            {plan.href ? (
+              <Link href={plan.href} style={{
+                display: 'block', textAlign: 'center', background: plan.color,
+                color: '#fff', padding: '0.85rem', borderRadius: '8px',
+                textDecoration: 'none', fontWeight: '700', fontSize: '1rem'
+              }}>
+                {plan.cta}
+              </Link>
+            ) : (
+              <a href={`mailto:${plan.email}`} style={{
+                display: 'block', textAlign: 'center', background: plan.color,
+                color: '#fff', padding: '0.85rem', borderRadius: '8px',
+                textDecoration: 'none', fontWeight: '700', fontSize: '1rem'
+              }}>
+                {plan.cta}
+              </a>
+            )}
           </div>
         ))}
       </div>
@@ -222,7 +192,7 @@ export default function Advertise() {
       <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '1.75rem', marginBottom: '2rem' }}>
         <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#111', margin: '0 0 1rem' }}>✅ Accepted Halal Certifications</h2>
         <p style={{ color: '#555', fontSize: '0.9rem', margin: '0 0 1rem' }}>
-          We only list restaurants certified by credible Zabihah halal organizations including:
+          We only list restaurants certified by credible Islamic halal organizations including:
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
           {certifications.map((cert, i) => (
@@ -242,10 +212,10 @@ export default function Advertise() {
         <h2 style={{ fontSize: '1.3rem', fontWeight: '700', margin: '0 0 1.5rem', color: '#111' }}>How It Works</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1.5rem', textAlign: 'center' }}>
           {[
-            { step: '1', title: 'Pick a Plan', desc: 'Choose Standard or Premium based on your goals.' },
-            { step: '2', title: 'Email Us', desc: 'Send your restaurant details and halal certification.' },
-            { step: '3', title: 'We Verify', desc: 'We confirm your Zabihah halal certification is valid.' },
-            { step: '4', title: 'Go Live', desc: 'Your listing goes live and customers start finding you.' },
+            { step: '1', title: 'Choose Free or Premium', desc: 'Free listings: email us your details. Premium: start your trial online.' },
+            { step: '2', title: 'We Verify', desc: 'We confirm your Zabihah halal certification is valid.' },
+            { step: '3', title: 'Go Live', desc: 'Your listing goes live and customers start finding you.' },
+            { step: '4', title: 'Grow with Premium', desc: 'Premium members also get the full AI Marketing Studio.' },
           ].map((s, i) => (
             <div key={i}>
               <div style={{
@@ -266,9 +236,9 @@ export default function Advertise() {
         {[
           { q: 'What is Zabihah halal?', a: 'Zabihah halal refers to meat slaughtered according to Islamic law, with certification from a recognized Islamic body such as HFSAA or HMS.' },
           { q: 'What if my certification is not on your list?', a: 'Email us and we will review your certification. We accept all credible Islamic halal certification bodies.' },
-          { q: 'How do I pay?', a: 'Email us and we will send you a secure payment link. We accept all major credit cards.' },
-          { q: 'Can I cancel anytime?', a: 'Yes, no contracts or commitments. Cancel anytime with a simple email.' },
-          { q: 'What if my restaurant is already listed?', a: 'We will upgrade your existing listing to your chosen plan.' },
+          { q: 'How does the Premium free trial work?', a: 'Start your trial at /studio/signup with a card or PayPal. You are not charged for 30 days, and you can cancel anytime before then.' },
+          { q: 'Can I cancel anytime?', a: 'Yes, no contracts or commitments. Cancel your Premium trial or subscription anytime.' },
+          { q: 'What if my restaurant is already listed for free?', a: 'You can upgrade anytime by starting a Premium trial — just let us know so we can add your Featured badge and Premium details.' },
         ].map((faq, i) => (
           <div key={i} style={{ marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: i < 4 ? '1px solid #e5e7eb' : 'none' }}>
             <h3 style={{ margin: '0 0 0.35rem', fontSize: '0.95rem', fontWeight: '700', color: '#111' }}>Q: {faq.q}</h3>
@@ -280,8 +250,8 @@ export default function Advertise() {
       {/* Final CTA */}
       <div style={{ textAlign: 'center', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '16px', padding: '2rem' }}>
         <h2 style={{ color: '#15803d', margin: '0 0 0.5rem' }}>Ready to reach more customers?</h2>
-        <p style={{ color: '#555', margin: '0 0 1.25rem' }}>Join Chicago's only exclusively Zabihah halal restaurant directory.</p>
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '1rem' }}>
+        <p style={{ color: '#555', margin: '0 0 1.25rem' }}>Get listed free, or start a 30-day Premium trial today.</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '1rem' }}>
           <a href="mailto:info@chicagohalalrestaurants.com" style={{
             display: 'inline-block', background: '#16a34a', color: '#fff',
             padding: '0.85rem 2rem', borderRadius: '8px', textDecoration: 'none',
