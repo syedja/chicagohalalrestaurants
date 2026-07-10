@@ -11,7 +11,7 @@
 // After creating the webhook, PayPal shows a Webhook ID — set that as
 // PAYPAL_WEBHOOK_ID.
 
-import { query } from "../../../../../lib/studio/db";
+import { query, ensureSchema } from "../../../../../lib/studio/db";
 import { paypalFetch } from "../../../../../lib/studio/paypal";
 
 async function verifyWebhookSignature(request, rawBody) {
@@ -52,6 +52,7 @@ export async function POST(request) {
   const event = JSON.parse(rawBody);
 
   try {
+    await ensureSchema();
     switch (event.event_type) {
       case "BILLING.SUBSCRIPTION.ACTIVATED": {
         const sub = event.resource;

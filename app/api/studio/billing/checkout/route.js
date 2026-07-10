@@ -3,11 +3,12 @@
 // trial, and returns the URL to redirect the owner to.
 
 import Stripe from "stripe";
-import { query } from "../../../../../lib/studio/db";
+import { query, ensureSchema } from "../../../../../lib/studio/db";
 import { getSessionFromRequest } from "../../../../../lib/studio/session";
 import { PLANS, TRIAL_DAYS, envKeyFor, isValidPlan } from "../../../../../lib/studio/billingPlans";
 
 export async function POST(request) {
+  await ensureSchema();
   const session = getSessionFromRequest(request);
   if (!session) {
     return Response.json({ ok: false, error: "Please log in again." }, { status: 401 });

@@ -4,12 +4,13 @@
 // (configured once in the PayPal dashboard/API when the plan is created),
 // not per-subscription — see README for how to create the two plans.
 
-import { query } from "../../../../../lib/studio/db";
+import { query, ensureSchema } from "../../../../../lib/studio/db";
 import { getSessionFromRequest } from "../../../../../lib/studio/session";
 import { paypalFetch } from "../../../../../lib/studio/paypal";
 import { envKeyFor, isValidPlan } from "../../../../../lib/studio/billingPlans";
 
 export async function POST(request) {
+  await ensureSchema();
   const session = getSessionFromRequest(request);
   if (!session) {
     return Response.json({ ok: false, error: "Please log in again." }, { status: 401 });

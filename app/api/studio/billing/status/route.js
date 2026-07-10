@@ -2,10 +2,11 @@
 // billing state, used by the (main) layout to decide whether to let them
 // into the Studio or redirect to /studio/billing.
 
-import { query } from "../../../../../lib/studio/db";
+import { query, ensureSchema } from "../../../../../lib/studio/db";
 import { getSessionFromRequest } from "../../../../../lib/studio/session";
 
 export async function GET(request) {
+  await ensureSchema();
   const session = getSessionFromRequest(request);
   if (!session) {
     return Response.json({ ok: false, error: "Not logged in." }, { status: 401 });

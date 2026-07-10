@@ -9,7 +9,7 @@
 //           customer.subscription.deleted, invoice.payment_failed
 
 import Stripe from "stripe";
-import { query } from "../../../../../lib/studio/db";
+import { query, ensureSchema } from "../../../../../lib/studio/db";
 
 export async function POST(request) {
   const secretKey = process.env.STRIPE_SECRET_KEY;
@@ -32,6 +32,7 @@ export async function POST(request) {
   }
 
   try {
+    await ensureSchema();
     switch (event.type) {
       case "checkout.session.completed": {
         const s = event.data.object;
