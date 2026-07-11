@@ -329,3 +329,22 @@ subscription locks out access automatically, not just at signup.
 - PayPal plan creation isn't automated in this build (see step 3 above) —
   it's a one-time setup you'll do (or I'll walk you through) once, not a
   recurring task.
+
+---
+
+## Update: Account/Billing Page
+
+Customers can now see their plan and manage billing from inside the
+Studio — **Billing** in the sidebar (`/studio/account`). Shows current
+plan, trial end date or next billing date, and a "Manage billing" button.
+
+For Stripe customers, that button opens **Stripe's own hosted Customer
+Portal** — update card, view invoices, cancel — none of which we built
+ourselves. For PayPal customers, it links directly to PayPal's own
+subscription management page, since that's how PayPal customers already
+manage subscriptions from their PayPal account.
+
+**One-time setup required before the Stripe button will work:** Stripe
+Dashboard → Settings → Billing → **Customer portal** → Activate. Until
+that's done, clicking "Manage billing" for a Stripe customer will show an
+error rather than open the portal.

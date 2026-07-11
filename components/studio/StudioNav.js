@@ -24,6 +24,9 @@ const icon = {
   clock: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" /></svg>
   ),
+  card: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /></svg>
+  ),
 };
 
 const LINKS = [
@@ -33,6 +36,7 @@ const LINKS = [
   { href: "/studio/reviews", label: "Review Replies", icon: icon.star },
   { href: "/studio/history", label: "History", icon: icon.clock },
   { href: "/studio/profile", label: "Restaurant Profile", icon: icon.user },
+  { href: "/studio/account", label: "Billing", icon: icon.card },
 ];
 
 export default function StudioNav() {
