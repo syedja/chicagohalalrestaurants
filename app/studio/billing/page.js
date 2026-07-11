@@ -6,6 +6,7 @@ import Link from "next/link";
 import { PLANS, TRIAL_DAYS } from "../../../lib/studio/billingPlans";
 import { checkAuth } from "../../../lib/studio/authClient";
 
+const PAID_PLANS = [PLANS.essentials, PLANS.growth];
 const PROVIDERS = [
   { id: "stripe", label: "Pay with card (Stripe)" },
   { id: "paypal", label: "Pay with PayPal" },
@@ -14,6 +15,7 @@ const PROVIDERS = [
 export default function BillingPage() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
+  const [planId, setPlanId] = useState("essentials");
   const [provider, setProvider] = useState("stripe");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -40,7 +42,7 @@ export default function BillingPage() {
         method: "POST",
         credentials: "include",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ plan: "premium" }),
+        body: JSON.stringify({ plan: planId }),
       });
       const data = await res.json();
       if (!res.ok || !data.url) throw new Error(data.error || "Couldn't start checkout.");
@@ -53,40 +55,38 @@ export default function BillingPage() {
 
   return (
     <div style={{ maxWidth: 640, margin: "40px auto" }}>
-      <div className="studio-eyebrow">Start your free trial</div>
-      <h1 className="studio-page-title">{TRIAL_DAYS} days free, then $19/month</h1>
+      <div className="studio-eyebrow">We run your marketing for you</div>
+      <h1 className="studio-page-title">{TRIAL_DAYS} days free, then billed monthly</h1>
       <p className="studio-page-sub">
-        The AI Marketing Studio is a Premium feature. Try it free for a month — you won't
-        be charged until day {TRIAL_DAYS + 1}, and you can cancel anytime before then.
+        Pick a plan. You won't be charged for {TRIAL_DAYS} days, and you can cancel
+        anytime before then.
       </p>
 
-      <div className="studio-grid cols-2" style={{ marginBottom: 24 }}>
-        <div className="studio-tile" style={{ cursor: "default" }}>
-          <div className="studio-tile-label">
-            {PLANS.free.label} — {PLANS.free.price}
-          </div>
-          <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 13.5, color: "var(--ink-soft)" }}>
-            {PLANS.free.features.map((f, i) => (
-              <li key={i}>{f}</li>
-            ))}
-          </ul>
-          <div className="studio-kicker" style={{ marginTop: 12 }}>
-            Already how every listing works — no account needed.{" "}
-            <Link href="/grade">Get listed free</Link>
-          </div>
-        </div>
+      <div className="studio-kicker" style={{ marginBottom: 16 }}>
+        Just want the free directory listing, no service? {" "}
+        <Link href="/grade">Get listed free</Link> — no account needed.
+      </div>
 
-        <div className="studio-tile selected" style={{ cursor: "default" }}>
-          <div className="studio-tile-label">
-            {PLANS.premium.label} — {PLANS.premium.price}
-            {PLANS.premium.period}
-          </div>
-          <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 13.5, color: "var(--ink-soft)" }}>
-            {PLANS.premium.features.map((f, i) => (
-              <li key={i}>{f}</li>
-            ))}
-          </ul>
-        </div>
+      <div className="studio-grid cols-2" style={{ marginBottom: 24 }}>
+        {PAID_PLANS.map((p) => (
+          <button
+            type="button"
+            key={p.id}
+            className={`studio-tile${planId === p.id ? " selected" : ""}`}
+            onClick={() => setPlanId(p.id)}
+            style={{ textAlign: "left" }}
+          >
+            <div className="studio-tile-label">
+              {p.label} — {p.price}
+              {p.period}
+            </div>
+            <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 13.5, color: "var(--ink-soft)" }}>
+              {p.features.map((f, i) => (
+                <li key={i}>{f}</li>
+              ))}
+            </ul>
+          </button>
+        ))}
       </div>
 
       <div className="studio-field">
@@ -118,8 +118,11 @@ export default function BillingPage() {
         {busy ? "Starting checkout…" : `Start ${TRIAL_DAYS}-day free trial with ${provider === "stripe" ? "card" : "PayPal"}`}
       </button>
       <div className="studio-help" style={{ textAlign: "center", marginTop: 10 }}>
-        A payment method is required to start the trial, but nothing is charged until day{" "}
-        {TRIAL_DAYS + 1} — cancel anytime before then.
+        Prefer to pay by Zelle or check instead? {" "}
+        <a href="https://wa.me/16302104365" target="_blank" rel="noopener">
+          Message us on WhatsApp
+        </a>{" "}
+        and we'll set you up directly.
       </div>
     </div>
   );
