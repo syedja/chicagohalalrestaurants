@@ -1,94 +1,91 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 /**
- * RestaurantDirectory
- * -----------------------------------------------------------------------
- * The "all restaurants on one page" directory for chicagohalalrestaurants.com.
+ * RestaurantDirectory — chicagohalalrestaurants.com one-pager
  *
- * WHAT THIS EXPECTS FROM YOUR restaurants.json
- * Each restaurant object should have (adjust the field names below in
- * `normalize()` if your real JSON uses different keys):
- *   name            string   (required)
- *   cuisine         string   (required)
- *   neighborhood    string
- *   certification   string   ("HFSAA" | "HMS" | "ISWA" | "MCG")
- *   phone           string
- *   address         string
- *   tier            "free" | "featured" | "premium"   (default "free")
- *   slug            string   (used for /restaurantname link on premium tier)
+ * Data contract (app/data/restaurants.json — plain array):
+ *   name, address, neighborhood (slug), zip, cuisine (slug),
+ *   rating, certified_halal (bool), family_friendly, delivery_available
+ *   Optional future fields: tier ("free"|"featured"|"premium"), slug
  *
- * HOW TO INTEGRATE
- *   1. Drop this file into: components/RestaurantDirectory.jsx
- *   2. In your homepage (e.g. app/page.js), import your real data and render:
- *        import restaurants from '@/data/restaurants.json';
- *        import RestaurantDirectory from '@/components/RestaurantDirectory';
- *        export default function Home() {
- *          return <RestaurantDirectory restaurants={restaurants} />;
- *        }
- *   3. Add the Google Fonts link (see bottom of this file comment) to your
- *      root layout's <head>, or wire up next/font instead if you prefer.
- *
- * FONT SETUP (add to app/layout.js <head>, or use next/font):
- *   <link rel="preconnect" href="https://fonts.googleapis.com" />
- *   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
- * -----------------------------------------------------------------------
+ * NOTE ON DUPLICATE NAMES: chains (The Halal Guys, Pita Inn, ...) appear
+ * at multiple addresses, so name-derived slugs collide. React keys here
+ * use slug+index (safe). BEFORE building /restaurantname Premium pages,
+ * duplicate slugs must be made unique in the data (e.g. append location:
+ * "the-halal-guys-loop", "the-halal-guys-skokie").
  */
 
-function normalize(r) {
-  return {
-    name: r.name ?? 'Unnamed Restaurant',
-    cuisine: r.cuisine ?? 'Halal',
-    neighborhood: r.neighborhood ?? '',
-    certification: r.certification ?? '',
-    phone: r.phone ?? '',
-    address: r.address ?? '',
-    tier: r.tier ?? 'free',
-    slug: r.slug ?? slugify(r.name ?? ''),
-  };
+const LATTICE = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23c9a227' stroke-width='1'%3E%3Cpath d='M36 6L43 29L66 36L43 43L36 66L29 43L6 36L29 29Z'/%3E%3Ccircle cx='36' cy='36' r='4'/%3E%3C/g%3E%3C/svg%3E")`;
+
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+function prettify(slug) {
+  if (!slug) return '';
+  return slug
+    .split('-')
+    .map((w) => (w.length ? w[0].toUpperCase() + w.slice(1) : w))
+    .join(' ');
 }
 
 function slugify(str) {
-  return str
+  return (str || '')
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 }
 
+function normalize(r, i) {
+  return {
+    id: `${slugify(r.name)}-${i}`, // unique even for chains
+    name: r.name ?? 'Unnamed Restaurant',
+    cuisine: prettify(r.cuisine ?? 'halal'),
+    cuisineRaw: r.cuisine ?? 'halal',
+    neighborhood: prettify(r.neighborhood ?? ''),
+    certifiedHalal: r.certified_halal ?? false,
+    address: r.address ?? '',
+    rating: typeof r.rating === 'number' ? r.rating : null,
+    tier: r.tier ?? 'free',
+    slug: r.slug ?? slugify(r.name),
+  };
+}
+
 function initialOf(name) {
-  const c = name.trim()[0]?.toUpperCase() ?? '#';
+  const c = (name || '').trim()[0]?.toUpperCase() ?? '#';
   return /[A-Z]/.test(c) ? c : '#';
+}
+
+function mapsUrl(address) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
 export default function RestaurantDirectory({ restaurants = [] }) {
   const [query, setQuery] = useState('');
   const [cuisineFilter, setCuisineFilter] = useState('All');
-  const [expanded, setExpanded] = useState(null); // slug of expanded card
+  const [expanded, setExpanded] = useState(null);
+  const mainRef = useRef(null);
 
   const data = useMemo(() => restaurants.map(normalize), [restaurants]);
 
   const cuisines = useMemo(() => {
-    const set = new Set(data.map((r) => r.cuisine));
-    return ['All', ...Array.from(set).sort()];
+    const map = new Map();
+    for (const r of data) {
+      map.set(r.cuisineRaw, { label: r.cuisine, count: (map.get(r.cuisineRaw)?.count ?? 0) + 1 });
+    }
+    return Array.from(map, ([value, { label, count }]) => ({ value, label, count }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }, [data]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return data
-      .filter((r) => cuisineFilter === 'All' || r.cuisine === cuisineFilter)
-      .filter((r) => {
-        if (!q) return true;
-        return (
-          r.name.toLowerCase().includes(q) ||
-          r.cuisine.toLowerCase().includes(q)
-        );
-      })
+      .filter((r) => cuisineFilter === 'All' || r.cuisineRaw === cuisineFilter)
+      .filter((r) => !q || r.name.toLowerCase().includes(q) || r.cuisine.toLowerCase().includes(q))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [data, query, cuisineFilter]);
 
-  // Group alphabetically for the letter-rail layout
   const grouped = useMemo(() => {
     const map = new Map();
     for (const r of filtered) {
@@ -96,330 +93,700 @@ export default function RestaurantDirectory({ restaurants = [] }) {
       if (!map.has(letter)) map.set(letter, []);
       map.get(letter).push(r);
     }
-    return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
+    return map;
   }, [filtered]);
 
-  return (
-    <div className="chd-page">
-      <header className="chd-header">
-        <div className="chd-crescent" aria-hidden="true">☾</div>
-        <h1>Every Zabihah Halal Restaurant in Chicago.<br />One Page.</h1>
-        <p className="chd-sub">
-          {data.length} restaurants, alphabetically. Search by name or cuisine below.
-        </p>
+  const activeLetters = useMemo(() => new Set(grouped.keys()), [grouped]);
+  const orderedLetters = [
+    ...LETTERS.filter((l) => activeLetters.has(l)),
+    ...(activeLetters.has('#') ? ['#'] : []),
+  ];
 
-        <div className="chd-controls">
-          <div className="chd-search-arch">
+  const jumpTo = (letter) => {
+    const el = document.getElementById(`letter-${letter}`);
+    if (el) el.scrollIntoView({ block: 'start' });
+  };
+
+  return (
+    <div className="chd">
+      {/* ============ HERO ============ */}
+      <header className="hero">
+        <div className="hero-lattice" aria-hidden="true" />
+        <div className="hero-inner">
+          <p className="hero-eyebrow">Halal Restaurants · Chicago &amp; Suburbs</p>
+          <h1 className="hero-title">
+            Find Halal Restaurants<br />
+            Across <em>Chicagoland.</em>
+          </h1>
+          <p className="hero-sub">
+            {data.length} restaurants across {cuisines.length} cuisines — alphabetical, searchable, and all in one place — and counting…
+          </p>
+          <p className="hero-disclaimer">
+            (Zabihah halal status should be verified directly with each restaurant.)
+          </p>
+
+          <div className="searchwrap" role="search">
+            <svg className="search-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
+              <line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
             <input
               type="text"
-              placeholder="Search by restaurant name or cuisine…"
+              placeholder="Search a restaurant or a cuisine…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               aria-label="Search restaurants by name or cuisine"
             />
+            {query && (
+              <button className="search-clear" onClick={() => setQuery('')} aria-label="Clear search">
+                ✕
+              </button>
+            )}
           </div>
-          <select
-            value={cuisineFilter}
-            onChange={(e) => setCuisineFilter(e.target.value)}
-            aria-label="Filter by cuisine"
-          >
+
+          <div className="chips" role="group" aria-label="Filter by cuisine">
+            <button
+              className={`chip ${cuisineFilter === 'All' ? 'chip-on' : ''}`}
+              onClick={() => setCuisineFilter('All')}
+            >
+              All <span className="chip-count">{data.length}</span>
+            </button>
             {cuisines.map((c) => (
-              <option key={c} value={c}>{c}</option>
+              <button
+                key={c.value}
+                className={`chip ${cuisineFilter === c.value ? 'chip-on' : ''}`}
+                onClick={() => setCuisineFilter(cuisineFilter === c.value ? 'All' : c.value)}
+              >
+                {c.label} <span className="chip-count">{c.count}</span>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
       </header>
 
-      {filtered.length === 0 ? (
-        <p className="chd-empty">No restaurants match that search. Try a different name or cuisine.</p>
-      ) : (
-        <main>
-          {grouped.map(([letter, list]) => (
-            <section key={letter} className="chd-letter-group">
-              <div className="chd-letter-rail">{letter}</div>
-              <div className="chd-grid">
-                {list.map((r) => (
-                  <RestaurantBox
-                    key={r.slug}
-                    restaurant={r}
-                    isExpanded={expanded === r.slug}
-                    onToggle={() =>
-                      setExpanded(expanded === r.slug ? null : r.slug)
-                    }
+      {/* ============ A–Z INDEX RAIL ============ */}
+      <nav className="azbar" aria-label="Jump to letter">
+        <div className="azbar-inner">
+          {[...LETTERS, ...(activeLetters.has('#') ? ['#'] : [])].map((l) => (
+            <button
+              key={l}
+              className="az"
+              disabled={!activeLetters.has(l)}
+              onClick={() => jumpTo(l)}
+              aria-label={`Jump to ${l}`}
+            >
+              {l}
+            </button>
+          ))}
+          <span className="az-count">{filtered.length} shown</span>
+        </div>
+      </nav>
+
+      {/* ============ DIRECTORY ============ */}
+      <main className="ledger" ref={mainRef}>
+        {filtered.length === 0 ? (
+          <div className="empty">
+            <p className="empty-title">No restaurants match “{query}”.</p>
+            <p className="empty-hint">Try a shorter name, or clear the cuisine filter.</p>
+            <button className="empty-reset" onClick={() => { setQuery(''); setCuisineFilter('All'); }}>
+              Show all {data.length} restaurants
+            </button>
+          </div>
+        ) : (
+          orderedLetters.map((letter) => (
+            <section key={letter} id={`letter-${letter}`} className="letter-section">
+              <div className="letter-head">
+                <span className="letter-glyph">{letter}</span>
+                <span className="letter-rule" aria-hidden="true" />
+                <span className="letter-n">{grouped.get(letter).length}</span>
+              </div>
+              <div className="grid">
+                {grouped.get(letter).map((r) => (
+                  <Card
+                    key={r.id}
+                    r={r}
+                    open={expanded === r.id}
+                    onToggle={() => setExpanded(expanded === r.id ? null : r.id)}
                   />
                 ))}
               </div>
             </section>
-          ))}
-        </main>
-      )}
+          ))
+        )}
+      </main>
 
-      <footer className="chd-footer">
-        <p>Own a restaurant that belongs here? <a href="/list-your-restaurant">Get listed free</a>, or go Premium for a dedicated page.</p>
+      {/* ============ FOOTER ============ */}
+      <footer className="foot">
+        <div className="foot-card">
+          <p className="foot-eyebrow">For restaurant owners</p>
+          <h2 className="foot-title">Your restaurant belongs on this page.</h2>
+          <p className="foot-copy">
+            Free listings for every Zabihah halal restaurant in Chicagoland. Featured spots and
+            dedicated pages available.
+          </p>
+          <div className="foot-actions">
+            <a className="foot-btn" href="https://wa.me/16302104365" target="_blank" rel="noopener noreferrer">
+              WhatsApp us · (630) 210-4365
+            </a>
+            <a className="foot-btn foot-btn-ghost" href="mailto:info@chicagohalalrestaurants.com">
+              info@chicagohalalrestaurants.com
+            </a>
+          </div>
+          <a className="foot-pricing-link" href="/advertise">
+            See Featured &amp; Premium pricing →
+          </a>
+        </div>
+        <p className="foot-legal">
+          © {new Date().getFullYear()} ChicagoHalalRestaurants.com · While we make our best efforts to
+          list only Halal restaurants on our site, the zabihah halal status should also be verified
+          directly with each restaurant.
+        </p>
       </footer>
 
+      {/* ============ STYLES ============ */}
       <style jsx>{`
-        .chd-page {
-          --forest: #16332a;
-          --forest-deep: #0d211a;
+        .chd {
+          --forest: #14352a;
+          --forest-deep: #0b1f18;
           --gold: #c9a227;
-          --gold-light: #e4c766;
-          --cream: #faf6ec;
-          --ink: #201f1a;
-          --line: #e3dcc8;
-          background: var(--cream);
+          --gold-soft: #e5cd7d;
+          --ivory: #f7f3e8;
+          --paper: #fffdf7;
+          --ink: #1d221f;
+          --mute: #7c7767;
+          --line: #e6dfc9;
+          background: var(--ivory);
           color: var(--ink);
-          font-family: 'Inter', -apple-system, sans-serif;
+          font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
           min-height: 100vh;
-          padding: 0 0 4rem;
+        }
+        .chd :global(*) {
+          box-sizing: border-box;
         }
 
-        .chd-header {
-          background: var(--forest);
-          color: var(--cream);
-          text-align: center;
-          padding: 3.5rem 1.5rem 3rem;
+        /* ---------- HERO ---------- */
+        .hero {
           position: relative;
+          background: linear-gradient(175deg, var(--forest-deep) 0%, var(--forest) 70%);
+          color: var(--ivory);
           overflow: hidden;
         }
-        .chd-header::before {
-          content: '';
+        .hero-lattice {
           position: absolute;
           inset: 0;
-          background-image: radial-gradient(circle, var(--gold) 1px, transparent 1px);
-          background-size: 22px 22px;
-          opacity: 0.08;
+          background-image: ${LATTICE};
+          background-size: 72px 72px;
+          opacity: 0.07;
           pointer-events: none;
+          -webkit-mask-image: radial-gradient(ellipse 90% 100% at 50% 0%, black 40%, transparent 100%);
+          mask-image: radial-gradient(ellipse 90% 100% at 50% 0%, black 40%, transparent 100%);
         }
-        .chd-crescent {
-          font-size: 2rem;
-          color: var(--gold-light);
-          margin-bottom: 0.5rem;
+        .hero-inner {
+          position: relative;
+          max-width: 1080px;
+          margin: 0 auto;
+          padding: 4.5rem 1.5rem 2.5rem;
+          text-align: center;
         }
-        .chd-header h1 {
+        .hero-eyebrow {
+          font-size: 0.78rem;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: var(--gold-soft);
+          margin: 0 0 1.25rem;
+        }
+        .hero-title {
           font-family: 'Fraunces', Georgia, serif;
           font-weight: 600;
-          font-size: clamp(1.75rem, 4vw, 2.75rem);
-          line-height: 1.15;
-          margin: 0 0 0.75rem;
-          position: relative;
+          font-size: clamp(2.1rem, 5.5vw, 3.9rem);
+          line-height: 1.06;
+          letter-spacing: -0.01em;
+          margin: 0 0 1rem;
         }
-        .chd-sub {
-          color: var(--gold-light);
-          font-size: 0.95rem;
-          margin: 0 0 2rem;
-          position: relative;
+        .hero-title em {
+          font-style: italic;
+          color: var(--gold-soft);
+        }
+        .hero-sub {
+          font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+          color: rgba(247, 243, 232, 0.75);
+          margin: 0 auto 0.5rem;
+          max-width: 42rem;
+        }
+        .hero-disclaimer {
+          font-size: 0.74rem;
+          color: rgba(247, 243, 232, 0.45);
+          margin: 0 auto 2.25rem;
+          max-width: 42rem;
         }
 
-        .chd-controls {
+        /* ---------- SEARCH ---------- */
+        .searchwrap {
+          position: relative;
+          max-width: 560px;
+          margin: 0 auto 1.5rem;
+          display: flex;
+          align-items: center;
+          background: var(--paper);
+          border: 1.5px solid var(--gold);
+          border-radius: 999px;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        }
+        .search-icon {
+          margin-left: 1.1rem;
+          color: var(--mute);
+          flex-shrink: 0;
+        }
+        .searchwrap input {
+          flex: 1;
+          min-width: 0;
+          border: none;
+          background: transparent;
+          font: inherit;
+          font-size: 1rem;
+          color: var(--ink);
+          padding: 0.95rem 0.9rem;
+          outline: none;
+        }
+        .searchwrap input::placeholder {
+          color: var(--mute);
+        }
+        .searchwrap:focus-within {
+          border-color: var(--gold-soft);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 4px rgba(201, 162, 39, 0.25);
+        }
+        .search-clear {
+          border: none;
+          background: none;
+          color: var(--mute);
+          font-size: 0.9rem;
+          padding: 0.5rem 1.1rem 0.5rem 0.25rem;
+          cursor: pointer;
+        }
+
+        /* ---------- CUISINE CHIPS ---------- */
+        .chips {
+          display: flex;
+          gap: 0.5rem;
+          overflow-x: auto;
+          padding: 0.25rem 0.25rem 1rem;
+          scrollbar-width: thin;
+          justify-content: safe center;
+        }
+        .chip {
+          flex-shrink: 0;
+          border: 1px solid rgba(229, 205, 125, 0.4);
+          background: rgba(247, 243, 232, 0.06);
+          color: var(--ivory);
+          font: inherit;
+          font-size: 0.82rem;
+          font-weight: 500;
+          padding: 0.42rem 0.85rem;
+          border-radius: 999px;
+          cursor: pointer;
+          transition: background 0.15s ease, border-color 0.15s ease;
+          white-space: nowrap;
+        }
+        .chip:hover {
+          border-color: var(--gold-soft);
+          background: rgba(247, 243, 232, 0.12);
+        }
+        .chip-on {
+          background: var(--gold);
+          border-color: var(--gold);
+          color: var(--forest-deep);
+          font-weight: 600;
+        }
+        .chip-count {
+          opacity: 0.65;
+          font-size: 0.72rem;
+          margin-left: 0.15rem;
+        }
+
+        /* ---------- A–Z BAR ---------- */
+        .azbar {
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          background: rgba(247, 243, 232, 0.92);
+          backdrop-filter: blur(8px);
+          border-bottom: 1px solid var(--line);
+        }
+        .azbar-inner {
+          max-width: 1080px;
+          margin: 0 auto;
+          padding: 0.45rem 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.1rem;
+          overflow-x: auto;
+        }
+        .az {
+          border: none;
+          background: none;
+          font-family: 'Fraunces', Georgia, serif;
+          font-size: 0.92rem;
+          font-weight: 600;
+          color: var(--forest);
+          width: 1.9rem;
+          height: 1.9rem;
+          border-radius: 6px;
+          cursor: pointer;
+          flex-shrink: 0;
+        }
+        .az:hover:not(:disabled) {
+          background: var(--gold);
+          color: var(--forest-deep);
+        }
+        .az:disabled {
+          color: #c9c3b0;
+          cursor: default;
+        }
+        .az-count {
+          margin-left: auto;
+          font-size: 0.75rem;
+          color: var(--mute);
+          white-space: nowrap;
+          padding-left: 0.75rem;
+        }
+
+        /* ---------- LEDGER ---------- */
+        .ledger {
+          max-width: 1080px;
+          margin: 0 auto;
+          padding: 2.25rem 1.25rem 3rem;
+        }
+        .letter-section {
+          scroll-margin-top: 3.6rem;
+          margin-bottom: 2rem;
+        }
+        .letter-head {
+          display: flex;
+          align-items: baseline;
+          gap: 0.9rem;
+          margin-bottom: 0.9rem;
+        }
+        .letter-glyph {
+          font-family: 'Fraunces', Georgia, serif;
+          font-size: 2rem;
+          font-weight: 600;
+          color: var(--forest);
+          line-height: 1;
+        }
+        .letter-rule {
+          flex: 1;
+          height: 1px;
+          background: linear-gradient(90deg, var(--gold) 0%, var(--line) 40%, transparent 100%);
+          transform: translateY(-0.35rem);
+        }
+        .letter-n {
+          font-size: 0.75rem;
+          color: var(--mute);
+        }
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 0.7rem;
+        }
+
+        /* ---------- EMPTY ---------- */
+        .empty {
+          text-align: center;
+          padding: 4rem 1rem;
+        }
+        .empty-title {
+          font-family: 'Fraunces', Georgia, serif;
+          font-size: 1.3rem;
+          margin: 0 0 0.4rem;
+        }
+        .empty-hint {
+          color: var(--mute);
+          margin: 0 0 1.5rem;
+        }
+        .empty-reset {
+          border: 1.5px solid var(--forest);
+          background: none;
+          color: var(--forest);
+          font: inherit;
+          font-weight: 600;
+          padding: 0.6rem 1.4rem;
+          border-radius: 999px;
+          cursor: pointer;
+        }
+        .empty-reset:hover {
+          background: var(--forest);
+          color: var(--ivory);
+        }
+
+        /* ---------- FOOTER ---------- */
+        .foot {
+          background: var(--forest-deep);
+          padding: 3rem 1.25rem 2rem;
+        }
+        .foot-card {
+          max-width: 720px;
+          margin: 0 auto 2rem;
+          text-align: center;
+          color: var(--ivory);
+        }
+        .foot-eyebrow {
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: var(--gold-soft);
+          margin: 0 0 0.75rem;
+        }
+        .foot-title {
+          font-family: 'Fraunces', Georgia, serif;
+          font-weight: 600;
+          font-size: clamp(1.4rem, 3vw, 1.9rem);
+          margin: 0 0 0.6rem;
+        }
+        .foot-copy {
+          color: rgba(247, 243, 232, 0.7);
+          font-size: 0.95rem;
+          margin: 0 0 1.5rem;
+        }
+        .foot-actions {
           display: flex;
           gap: 0.75rem;
           justify-content: center;
           flex-wrap: wrap;
-          position: relative;
         }
-        .chd-search-arch {
-          background: var(--cream);
-          border-radius: 999px 999px 8px 8px;
-          padding: 2px;
-          box-shadow: 0 0 0 2px var(--gold);
-        }
-        .chd-search-arch input {
-          width: min(420px, 70vw);
-          border: none;
-          background: transparent;
-          padding: 0.7rem 1.2rem;
-          font-size: 0.95rem;
-          font-family: inherit;
-          color: var(--ink);
-          outline: none;
-        }
-        .chd-controls select {
+        .foot-btn {
+          display: inline-block;
+          background: var(--gold);
+          color: var(--forest-deep);
+          font-weight: 600;
+          font-size: 0.92rem;
+          padding: 0.7rem 1.5rem;
           border-radius: 999px;
-          border: 2px solid var(--gold);
-          background: var(--cream);
-          padding: 0.7rem 1rem;
-          font-family: inherit;
-          font-size: 0.9rem;
-          color: var(--ink);
+          text-decoration: none;
         }
-        .chd-controls input:focus-visible,
-        .chd-controls select:focus-visible {
-          outline: 3px solid var(--gold-light);
-          outline-offset: 2px;
+        .foot-btn:hover {
+          background: var(--gold-soft);
         }
-
-        .chd-empty {
+        .foot-btn-ghost {
+          background: none;
+          border: 1.5px solid rgba(229, 205, 125, 0.5);
+          color: var(--ivory);
+        }
+        .foot-btn-ghost:hover {
+          background: rgba(247, 243, 232, 0.08);
+          border-color: var(--gold-soft);
+        }
+        .foot-pricing-link {
+          display: block;
           text-align: center;
-          padding: 3rem 1rem;
-          color: #6b6656;
-        }
-
-        main {
-          max-width: 1100px;
-          margin: 0 auto;
-          padding: 2.5rem 1.5rem 0;
-        }
-
-        .chd-letter-group {
-          display: flex;
-          gap: 1.25rem;
-          margin-bottom: 1.5rem;
-          align-items: flex-start;
-        }
-        .chd-letter-rail {
-          flex: 0 0 2.5rem;
-          font-family: 'Fraunces', Georgia, serif;
-          font-size: 1.5rem;
+          margin-top: 1.25rem;
+          font-size: 0.85rem;
           font-weight: 600;
-          color: var(--gold);
-          border-bottom: 2px solid var(--line);
-          padding-bottom: 0.4rem;
-          position: sticky;
-          top: 1rem;
-        }
-        .chd-grid {
-          flex: 1;
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-          gap: 0.6rem;
-        }
-
-        @media (max-width: 640px) {
-          .chd-letter-group { gap: 0.75rem; }
-          .chd-letter-rail { flex-basis: 1.75rem; font-size: 1.15rem; }
-        }
-
-        .chd-footer {
-          text-align: center;
-          margin-top: 3rem;
-          color: #6b6656;
-          font-size: 0.9rem;
-        }
-        .chd-footer a {
-          color: var(--forest);
-          font-weight: 600;
+          color: var(--gold-soft);
           text-decoration: underline;
-          text-decoration-color: var(--gold);
+          text-decoration-color: rgba(229, 205, 125, 0.4);
+        }
+        .foot-pricing-link:hover {
+          color: var(--gold);
+        }
+        .foot-legal {
+          text-align: center;
+          color: rgba(247, 243, 232, 0.4);
+          font-size: 0.78rem;
+          margin: 0;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .chd {
+            scroll-behavior: smooth;
+          }
+        }
+        @media (max-width: 640px) {
+          .hero-inner {
+            padding-top: 3rem;
+          }
+          .chips {
+            justify-content: flex-start;
+          }
         }
       `}</style>
     </div>
   );
 }
 
-function RestaurantBox({ restaurant, isExpanded, onToggle }) {
-  const { name, cuisine, neighborhood, certification, phone, address, tier, slug } = restaurant;
-  const isPremium = tier === 'premium';
-  const isFeatured = tier === 'featured';
+function Card({ r, open, onToggle }) {
+  const isPremium = r.tier === 'premium';
+  const isFeatured = r.tier === 'featured';
 
   return (
-    <div className={`box ${isFeatured ? 'box-featured' : ''} ${isPremium ? 'box-premium' : ''}`}>
-      <button
-        className="box-face"
-        onClick={onToggle}
-        aria-expanded={isExpanded}
-        aria-controls={`detail-${slug}`}
-      >
-        <span className="box-name">{name}</span>
-        <span className="box-meta">{cuisine}{neighborhood ? ` · ${neighborhood}` : ''}</span>
-        {certification && <span className="box-cert">{certification} Certified</span>}
-        {isPremium && <span className="box-badge">★ Premium</span>}
+    <article className={`card ${isFeatured ? 'card-featured' : ''} ${isPremium ? 'card-premium' : ''}`}>
+      <button className="face" onClick={onToggle} aria-expanded={open}>
+        <span className="row">
+          <span className="name">{r.name}</span>
+          {r.rating != null && (
+            <span className="rating" aria-label={`Rated ${r.rating} out of 5`}>
+              <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true">
+                <path
+                  d="M10 1.5l2.47 5.3 5.53.7-4.1 3.9 1.1 5.6L10 14.2 5 17l1.1-5.6L2 7.5l5.53-.7z"
+                  fill="currentColor"
+                />
+              </svg>
+              {r.rating.toFixed(1)}
+            </span>
+          )}
+        </span>
+        <span className="meta">
+          {r.cuisine}
+          {r.neighborhood ? ` · ${r.neighborhood}` : ''}
+        </span>
+        <span className="badges">
+          {r.certifiedHalal && <span className="badge badge-cert">Halal Certified</span>}
+          {isPremium && <span className="badge badge-prem">★ Premium</span>}
+          {isFeatured && !isPremium && <span className="badge badge-feat">Featured</span>}
+        </span>
       </button>
 
-      {isExpanded && (
-        <div id={`detail-${slug}`} className="box-detail">
-          {phone && <p>📞 <a href={`tel:${phone.replace(/[^0-9+]/g, '')}`}>{phone}</a></p>}
-          {address && <p>📍 {address}</p>}
-          {isPremium ? (
-            <a className="box-cta" href={`/${slug}`}>View full page →</a>
-          ) : (
-            <p className="box-hint">Full menu &amp; photos not listed yet.</p>
-          )}
+      {open && (
+        <div className="detail">
+          <p className="addr">{r.address}</p>
+          <div className="detail-actions">
+            <a href={mapsUrl(r.address)} target="_blank" rel="noopener noreferrer" className="dir">
+              Directions →
+            </a>
+            {isPremium && (
+              <a href={`/${r.slug}`} className="full">
+                View full page →
+              </a>
+            )}
+          </div>
         </div>
       )}
 
       <style jsx>{`
-        .box {
-          border: 1.5px solid var(--line);
-          border-radius: 10px;
-          background: #fff;
-          transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        .card {
+          background: var(--paper);
+          border: 1px solid var(--line);
+          border-radius: 12px;
+          overflow: hidden;
+          transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
         }
-        .box:hover, .box:focus-within {
+        .card:hover,
+        .card:focus-within {
           border-color: var(--gold);
-          box-shadow: 0 2px 10px rgba(201, 162, 39, 0.18);
+          box-shadow: 0 6px 20px rgba(20, 53, 42, 0.1);
+          transform: translateY(-1px);
         }
-        .box-featured {
-          border-color: var(--gold-light);
-          background: #fffdf6;
+        @media (prefers-reduced-motion: reduce) {
+          .card,
+          .card:hover {
+            transition: none;
+            transform: none;
+          }
         }
-        .box-premium {
+        .card-featured {
+          border-color: var(--gold-soft);
+        }
+        .card-premium {
           border-color: var(--gold);
-          background: linear-gradient(180deg, #fffdf6 0%, #fff 100%);
+          background: linear-gradient(180deg, #fffaf0 0%, var(--paper) 55%);
         }
-        .box-face {
+        .face {
+          display: block;
           width: 100%;
           text-align: left;
           background: none;
           border: none;
-          padding: 0.85rem 0.9rem;
+          font: inherit;
+          padding: 0.9rem 1rem 0.8rem;
           cursor: pointer;
-          display: flex;
-          flex-direction: column;
-          gap: 0.15rem;
-          font-family: inherit;
         }
-        .box-face:focus-visible {
-          outline: 3px solid var(--gold-light);
+        .face:focus-visible {
+          outline: 3px solid var(--gold-soft);
           outline-offset: -3px;
-          border-radius: 8px;
         }
-        .box-name {
+        .row {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 0.6rem;
+        }
+        .name {
           font-family: 'Fraunces', Georgia, serif;
           font-weight: 600;
-          font-size: 1rem;
+          font-size: 1.02rem;
+          line-height: 1.25;
           color: var(--ink);
         }
-        .box-meta {
-          font-size: 0.8rem;
-          color: #7a745e;
-        }
-        .box-cert {
-          font-size: 0.7rem;
-          color: var(--forest);
+        .rating {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.22rem;
+          font-size: 0.78rem;
           font-weight: 600;
-          margin-top: 0.15rem;
-        }
-        .box-badge {
-          font-size: 0.7rem;
           color: var(--gold);
+          flex-shrink: 0;
+        }
+        .meta {
+          display: block;
+          margin-top: 0.25rem;
+          font-size: 0.8rem;
+          color: var(--mute);
+        }
+        .badges {
+          display: flex;
+          gap: 0.35rem;
+          margin-top: 0.5rem;
+          flex-wrap: wrap;
+        }
+        .badge {
+          font-size: 0.66rem;
           font-weight: 600;
-          margin-top: 0.1rem;
+          letter-spacing: 0.04em;
+          padding: 0.18rem 0.5rem;
+          border-radius: 999px;
         }
-        .box-detail {
-          padding: 0 0.9rem 0.9rem;
-          font-size: 0.85rem;
-          border-top: 1px solid var(--line);
-          margin-top: 0.1rem;
-          padding-top: 0.6rem;
-        }
-        .box-detail p {
-          margin: 0.25rem 0;
-        }
-        .box-detail a {
+        .badge-cert {
           color: var(--forest);
+          background: rgba(20, 53, 42, 0.08);
         }
-        .box-cta {
-          display: inline-block;
-          margin-top: 0.4rem;
+        .badge-prem {
+          color: #7a5c00;
+          background: rgba(201, 162, 39, 0.18);
+        }
+        .badge-feat {
+          color: #7a5c00;
+          background: rgba(229, 205, 125, 0.25);
+        }
+        .detail {
+          border-top: 1px dashed var(--line);
+          padding: 0.7rem 1rem 0.85rem;
+        }
+        .addr {
+          font-size: 0.82rem;
+          color: var(--ink);
+          margin: 0 0 0.5rem;
+          line-height: 1.45;
+        }
+        .detail-actions {
+          display: flex;
+          gap: 1rem;
+        }
+        .dir,
+        .full {
+          font-size: 0.82rem;
           font-weight: 600;
           color: var(--forest);
+          text-decoration: none;
         }
-        .box-hint {
-          color: #948d75;
-          font-style: italic;
+        .dir:hover,
+        .full:hover {
+          color: var(--gold);
+        }
+        .full {
+          color: #7a5c00;
         }
       `}</style>
-    </div>
+    </article>
   );
 }

@@ -25,7 +25,6 @@ export const metadata = {
     shortcut: '/favicon.ico',
   },
 }
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -33,6 +32,8 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/logo.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
       </head>
       <body style={{ margin: 0, padding: 0, fontFamily: 'system-ui, sans-serif', background: '#fafafa' }}>
         {/* Nav */}
@@ -64,24 +65,6 @@ export default function RootLayout({ children }) {
               <img src="/logo.png" alt="" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
             </a>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <a href="/blog" style={{
-                fontSize: '14px',
-                color: '#6b7280',
-                textDecoration: 'none',
-                padding: '6px 12px',
-                borderRadius: '6px',
-              }}>
-                Blog
-              </a>
-              <a href="/advertise" style={{
-                fontSize: '14px',
-                color: '#6b7280',
-                textDecoration: 'none',
-                padding: '6px 12px',
-                borderRadius: '6px',
-              }}>
-                Advertise
-              </a>
               <a href="/grade" style={{
                 fontSize: '14px',
                 fontWeight: '600',

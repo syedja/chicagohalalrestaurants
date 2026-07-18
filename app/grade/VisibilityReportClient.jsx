@@ -19,7 +19,7 @@ const CHECK_COPY = {
   },
   verified: {
     pass: 'Halal status verified (certified)',
-    warn: 'Halal status unverified — Standard listing adds your verified badge',
+    warn: 'Halal status unverified — Featured listing adds your verified badge',
   },
   phone: {
     pass: 'Phone number listed',
@@ -30,12 +30,12 @@ const CHECK_COPY = {
     fail: "Hours missing — you may lose customers who don't know when you're open",
   },
   photo: {
-    pass: 'Photo uploaded — listings with photos get 3× more clicks',
+    pass: 'Photo uploaded — listings with photos get more clicks',
     fail: 'No photo — Premium listing includes a featured photo',
   },
   description: {
-    pass: 'Custom description live — AI search engines can feature you',
-    fail: "No description — ChatGPT & Google AI Overview can't recommend you",
+    pass: 'Custom description live — helps customers learn what makes you special',
+    fail: "No description — customers can't learn what makes your restaurant special",
   },
 };
 
@@ -79,9 +79,45 @@ function CheckItem({ type, passes, isWarn }) {
   );
 }
 
+// Shared pricing block — Free / Featured ($29/yr) / Premium ($99/yr)
+function PricingTiers({ needsFeatured, needsPremium, heading, ctaHref, ctaLabel }) {
+  return (
+    <div className={styles.upsellBox}>
+      <p className={styles.upsellHeading}>{heading}</p>
+      <div className={styles.tierRow}>
+        {needsFeatured && (
+          <div className={styles.tierCard}>
+            <span className={styles.tierLabel}>Featured</span>
+            <span className={styles.tierPrice}>$29<span>/yr</span></span>
+            <ul className={styles.tierFeatures}>
+              <li>Verified halal badge</li>
+              <li>Phone &amp; hours listed</li>
+              <li>Priority placement</li>
+            </ul>
+          </div>
+        )}
+        {needsPremium && (
+          <div className={`${styles.tierCard} ${styles.tierCardPremium}`}>
+            <span className={styles.tierBadge}>Most popular</span>
+            <span className={styles.tierLabel}>Premium</span>
+            <span className={styles.tierPrice}>$99<span>/yr</span></span>
+            <ul className={styles.tierFeatures}>
+              <li>Everything in Featured</li>
+              <li>Dedicated restaurant page</li>
+              <li>Full menu &amp; photo gallery</li>
+              <li>Hours, socials &amp; more</li>
+            </ul>
+          </div>
+        )}
+      </div>
+      <a href={ctaHref} className={styles.ctaBtn}>{ctaLabel}</a>
+    </div>
+  );
+}
+
 function ReportCard({ data, onReset }) {
   const { restaurant, checks, score, alternatives } = data;
-  const needsStandard = !checks.verified || !checks.phone || !checks.hours;
+  const needsFeatured = !checks.verified || !checks.phone || !checks.hours;
   const needsPremium = !checks.photo || !checks.description;
   const subject = encodeURIComponent(`Claim listing for ${restaurant.name}`);
 
@@ -122,52 +158,24 @@ function ReportCard({ data, onReset }) {
             key={key}
             type={key}
             passes={val}
-            isWarn={!val && (key === 'verified' || key === 'description')}
+            isWarn={!val && key === 'verified'}
           />
         ))}
       </ul>
 
-      {(needsStandard || needsPremium) && (
-        <div className={styles.upsellBox}>
-          <p className={styles.upsellHeading}>Fix these issues and get more customers</p>
-          <div className={styles.tierRow}>
-            {needsStandard && (
-              <div className={styles.tierCard}>
-                <span className={styles.tierLabel}>Standard</span>
-                <span className={styles.tierPrice}>$19<span>/mo</span></span>
-                <ul className={styles.tierFeatures}>
-                  <li>Verified halal badge</li>
-                  <li>Phone & hours listed</li>
-                  <li>Priority placement</li>
-                </ul>
-              </div>
-            )}
-            {needsPremium && (
-              <div className={`${styles.tierCard} ${styles.tierCardPremium}`}>
-                <span className={styles.tierBadge}>Most popular</span>
-                <span className={styles.tierLabel}>Premium</span>
-                <span className={styles.tierPrice}>$49<span>/mo</span></span>
-                <ul className={styles.tierFeatures}>
-                  <li>Everything in Standard</li>
-                  <li>Featured photo</li>
-                  <li>AI Overview visibility</li>
-                  <li>ChatGPT & Perplexity ready</li>
-                </ul>
-              </div>
-            )}
-          </div>
-          <a
-            href={`mailto:hello@chicagohalalrestaurants.com?subject=${subject}`}
-            className={styles.ctaBtn}
-          >
-            Claim my listing →
-          </a>
-        </div>
+      {(needsFeatured || needsPremium) && (
+        <PricingTiers
+          needsFeatured={needsFeatured}
+          needsPremium={needsPremium}
+          heading="Fix these issues and get more customers"
+          ctaHref={`mailto:hello@chicagohalalrestaurants.com?subject=${subject}`}
+          ctaLabel="Claim my listing →"
+        />
       )}
 
       {score === 100 && (
         <div className={styles.perfectBox}>
-          <p>🎉 Your listing is fully optimized! You're showing up everywhere halal food seekers are looking.</p>
+          <p>Your listing is fully optimized! You're showing up everywhere halal food seekers are looking.</p>
         </div>
       )}
 
@@ -210,42 +218,15 @@ function NotFoundCard({ query }) {
           <span className={styles.checkIcon}>✕</span>
           <span className={styles.checkText}>Missing from "best halal [cuisine] in [neighborhood]" searches</span>
         </li>
-        <li className={`${styles.checkItem} ${styles.checkWarn}`}>
-          <span className={styles.checkIcon}>!</span>
-          <span className={styles.checkText}>Not visible in AI search (ChatGPT, Google AI Overview, Perplexity)</span>
-        </li>
       </ul>
-      <div className={styles.upsellBox} style={{ marginTop: '1.25rem' }}>
-        <p className={styles.upsellHeading}>Get listed and start getting found</p>
-        <div className={styles.tierRow}>
-          <div className={styles.tierCard}>
-            <span className={styles.tierLabel}>Standard</span>
-            <span className={styles.tierPrice}>$19<span>/mo</span></span>
-            <ul className={styles.tierFeatures}>
-              <li>Directory listing</li>
-              <li>Verified halal badge</li>
-              <li>Phone & hours</li>
-            </ul>
-          </div>
-          <div className={`${styles.tierCard} ${styles.tierCardPremium}`}>
-            <span className={styles.tierBadge}>Most popular</span>
-            <span className={styles.tierLabel}>Premium</span>
-            <span className={styles.tierPrice}>$49<span>/mo</span></span>
-            <ul className={styles.tierFeatures}>
-              <li>Everything in Standard</li>
-              <li>Featured photo</li>
-              <li>AI Overview ready</li>
-              <li>ChatGPT visibility</li>
-            </ul>
-          </div>
-        </div>
-        <a
-          href={`mailto:hello@chicagohalalrestaurants.com?subject=${subject}`}
-          className={styles.ctaBtn}
-        >
-          Get my restaurant listed →
-        </a>
-      </div>
+
+      <PricingTiers
+        needsFeatured
+        needsPremium
+        heading="Get listed and start getting found"
+        ctaHref={`mailto:hello@chicagohalalrestaurants.com?subject=${subject}`}
+        ctaLabel="Get my restaurant listed →"
+      />
     </div>
   );
 }
