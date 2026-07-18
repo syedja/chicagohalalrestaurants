@@ -45,7 +45,7 @@ const plans = [
     badge: 'Most Popular',
     features: [
       'Everything in Featured',
-      'Dedicated page at yoursite.com/restaurantname',
+      'Dedicated page at chicagohalalrestaurants.com/yourrestaurantname',
       'Full menu, photo gallery & hours',
       'Website, socials & directions links',
     ],
@@ -142,8 +142,11 @@ export default function Advertise() {
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 1.5rem', lineHeight: 1.9 }}>
               {plan.features.map((f, j) => (
-                <li key={j} style={{ fontSize: '0.86rem', color: '#333', paddingLeft: '1.1rem', position: 'relative' }}>
-                  <span style={{ position: 'absolute', left: 0, color: GOLD }}>✓</span>{f}
+                <li key={j} style={{
+                  fontSize: '0.86rem', color: '#333', paddingLeft: '1.1rem', position: 'relative',
+                  wordBreak: 'break-word', overflowWrap: 'anywhere',
+                }}>
+                  <span style={{ position: 'absolute', left: 0, top: '0.15rem', color: GOLD }}>✓</span>{f}
                 </li>
               ))}
             </ul>

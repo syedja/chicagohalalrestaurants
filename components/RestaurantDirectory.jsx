@@ -115,11 +115,11 @@ export default function RestaurantDirectory({ restaurants = [] }) {
         <div className="hero-inner">
           <p className="hero-eyebrow">Halal Restaurants · Chicago &amp; Suburbs</p>
           <h1 className="hero-title">
-            Find Halal Restaurants<br />
-            Across <em>Chicagoland.</em>
+            Every Halal Restaurant<br />
+            in Chicagoland. <em>One Page.</em>
           </h1>
           <p className="hero-sub">
-            {data.length} restaurants across {cuisines.length} cuisines — alphabetical, searchable, and all in one place — and counting…
+            {data.length} restaurants across {cuisines.length} cuisines — alphabetical, searchable, and growing every week.
           </p>
           <p className="hero-disclaimer">
             (Zabihah halal status should be verified directly with each restaurant.)
@@ -143,6 +143,13 @@ export default function RestaurantDirectory({ restaurants = [] }) {
               </button>
             )}
           </div>
+
+          <a
+            className="add-restaurant-link"
+            href="/advertise"
+          >
+            Don't see your favorite restaurant? Help us complete Chicagoland's largest halal restaurant directory. <strong>Add a Restaurant →</strong>
+          </a>
 
           <div className="chips" role="group" aria-label="Filter by cuisine">
             <button
@@ -325,7 +332,7 @@ export default function RestaurantDirectory({ restaurants = [] }) {
         .searchwrap {
           position: relative;
           max-width: 560px;
-          margin: 0 auto 1.5rem;
+          margin: 0 auto 0.9rem;
           display: flex;
           align-items: center;
           background: var(--paper);
@@ -363,6 +370,24 @@ export default function RestaurantDirectory({ restaurants = [] }) {
           font-size: 0.9rem;
           padding: 0.5rem 1.1rem 0.5rem 0.25rem;
           cursor: pointer;
+        }
+
+        .add-restaurant-link {
+          display: block;
+          max-width: 480px;
+          margin: 0 auto 1.75rem;
+          font-size: 0.82rem;
+          line-height: 1.5;
+          color: rgba(247, 243, 232, 0.65);
+          text-decoration: none;
+        }
+        .add-restaurant-link strong {
+          color: var(--gold-soft);
+          font-weight: 600;
+          white-space: nowrap;
+        }
+        .add-restaurant-link:hover strong {
+          color: var(--gold);
         }
 
         /* ---------- CUISINE CHIPS ---------- */
