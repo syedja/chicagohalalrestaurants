@@ -134,6 +134,7 @@
   {
     "name": "AJWAAH SWEETS",
     "address": "2453 W Devon Ave, Chicago, IL 60659, USA",
+    "zabihah_confirmed": true,
     "neighborhood": "devon-ave",
     "zip": "",
     "cuisine": "pakistani",
@@ -222,6 +223,7 @@
   {
     "name": "Addah",
     "address": "1300 S Main St U, Lombard, IL 60148, USA",
+    "zabihah_confirmed": true,
     "neighborhood": "chicago",
     "zip": "",
     "cuisine": "pakistani",
@@ -2917,6 +2919,7 @@
   {
     "name": "Fahrenheit Halal",
     "address": "136 E Army Trail Rd, Glendale Heights, IL 60139, USA",
+    "zabihah_confirmed": true,
     "neighborhood": "glendale-heights",
     "zip": "",
     "cuisine": "middle-eastern",
@@ -3005,6 +3008,7 @@
   {
     "name": "Shaahi Biryani",
     "address": "246 Town Center Ln, Glendale Heights, IL 60139, USA",
+    "zabihah_confirmed": true,
     "neighborhood": "glendale-heights",
     "zip": "",
     "cuisine": "indian",

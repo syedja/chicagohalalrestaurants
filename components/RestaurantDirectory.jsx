@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 /**
  * RestaurantDirectory — chicagohalalrestaurants.com one-pager
@@ -45,6 +45,7 @@ function normalize(r, i) {
     cuisineRaw: r.cuisine ?? 'halal',
     neighborhood: prettify(r.neighborhood ?? ''),
     certifiedHalal: r.certified_halal ?? false,
+    zabihahConfirmed: r.zabihah_confirmed ?? false,
     address: r.address ?? '',
     rating: typeof r.rating === 'number' ? r.rating : null,
     tier: r.tier ?? 'free',
@@ -201,7 +202,8 @@ export default function RestaurantDirectory({ restaurants = [] }) {
           </div>
         ) : (
           orderedLetters.map((letter) => (
-            <section key={letter} id={`letter-${letter}`} className="letter-section">
+            <React.Fragment key={letter}>
+              <section id={`letter-${letter}`} className="letter-section">
               <div className="letter-head">
                 <span className="letter-glyph">{letter}</span>
                 <span className="letter-rule" aria-hidden="true" />
@@ -217,7 +219,16 @@ export default function RestaurantDirectory({ restaurants = [] }) {
                   />
                 ))}
               </div>
-            </section>
+              </section>
+              {letter === 'M' && (
+                <div className="owner-inline-cta">
+                  Own one of these restaurants? Get Featured placement - WhatsApp{' '}
+                  <a href="https://wa.me/16302104365" target="_blank" rel="noopener noreferrer">
+                    (630) 210-4365
+                  </a>
+                </div>
+              )}
+            </React.Fragment>
           ))
         )}
       </main>
@@ -231,6 +242,7 @@ export default function RestaurantDirectory({ restaurants = [] }) {
             Free listings for every Zabihah halal restaurant in Chicagoland. Featured spots and
             dedicated pages available.
           </p>
+          <p className="foot-tiers">Featured $29/yr and Premium $99/yr available. Accepted certifications: HFSAA, HMS, ISWA, MCG.</p>
           <div className="foot-actions">
             <a className="foot-btn" href="https://wa.me/16302104365" target="_blank" rel="noopener noreferrer">
               WhatsApp us · (630) 210-4365
@@ -486,6 +498,24 @@ export default function RestaurantDirectory({ restaurants = [] }) {
           scroll-margin-top: 3.6rem;
           margin-bottom: 2rem;
         }
+        .owner-inline-cta {
+          background: rgba(20, 53, 42, 0.06);
+          border: 1px solid var(--line);
+          border-radius: 10px;
+          padding: 0.85rem 1.1rem;
+          margin-bottom: 2rem;
+          font-size: 0.88rem;
+          color: var(--ink);
+          text-align: center;
+        }
+        .owner-inline-cta a {
+          color: var(--forest);
+          font-weight: 600;
+          text-decoration: underline;
+        }
+        .owner-inline-cta a:hover {
+          color: var(--gold);
+        }
         .letter-head {
           display: flex;
           align-items: baseline;
@@ -666,7 +696,8 @@ function Card({ r, open, onToggle }) {
           {r.neighborhood ? ` · ${r.neighborhood}` : ''}
         </span>
         <span className="badges">
-          {r.certifiedHalal && <span className="badge badge-cert">Halal Certified</span>}
+          {r.zabihahConfirmed && <span className="badge badge-zabihah">Zabihah Halal Certified</span>}
+          {r.certifiedHalal && !r.zabihahConfirmed && <span className="badge badge-cert">Halal</span>}
           {isPremium && <span className="badge badge-prem">★ Premium</span>}
           {isFeatured && !isPremium && <span className="badge badge-feat">Featured</span>}
         </span>
@@ -774,6 +805,11 @@ function Card({ r, open, onToggle }) {
         .badge-cert {
           color: var(--forest);
           background: rgba(20, 53, 42, 0.08);
+        }
+        .badge-zabihah {
+          color: #7a5c00;
+          background: rgba(201, 162, 39, 0.22);
+          border: 1px solid rgba(201, 162, 39, 0.5);
         }
         .badge-prem {
           color: #7a5c00;

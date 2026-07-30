@@ -233,7 +233,7 @@ export default async function Page({ params }) {
               <p style={{ margin: '0 0 0.25rem', color: '#555', fontSize: '0.9rem' }}>📍 {r.address}</p>
               <p style={{ margin: '0 0 0.5rem', color: '#f59e0b', fontWeight: '600', fontSize: '0.9rem' }}>★ {r.rating} / 5</p>
               <p style={{ margin: 0, fontSize: '0.82rem', color: '#888' }}>
-                {r.certified_halal ? '✅ Halal Certified' : ''} {r.family_friendly ? '· 👨‍👩‍👧 Family Friendly' : ''} {r.delivery_available ? '· 🚗 Delivery Available' : ''}
+                {r.zabihah_confirmed ? '✅ Zabihah Halal Certified' : r.certified_halal ? '✅ Halal' : ''} {r.family_friendly ? '· 👨‍👩‍👧 Family Friendly' : ''} {r.delivery_available ? '· 🚗 Delivery Available' : ''}
               </p>
             </div>
           ))}
