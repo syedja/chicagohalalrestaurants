@@ -103,7 +103,7 @@ export default function Advertise() {
           Premium tiers get you more visibility for the price of a couple coffees a month.
         </p>
         <div style={{ display: 'inline-block', background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '8px', padding: '0.5rem 1.25rem', fontSize: '0.88rem', color: '#92400e', fontWeight: 600 }}>
-          We only list restaurants with credible Zabihah halal certification
+          We aim to list only halal restaurants, and verify Zabihah certification with owners.
         </div>
       </div>
 
