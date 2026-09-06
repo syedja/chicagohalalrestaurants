@@ -293,7 +293,7 @@ export default function RestaurantDirectory({ restaurants = [] }) {
         .hero-lattice {
           position: absolute;
           inset: 0;
-          background-image: ${LATTICE};
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23c9a227' stroke-width='1'%3E%3Cpath d='M36 6L43 29L66 36L43 43L36 66L29 43L6 36L29 29Z'/%3E%3Ccircle cx='36' cy='36' r='4'/%3E%3C/g%3E%3C/svg%3E");
           background-size: 72px 72px;
           opacity: 0.07;
           pointer-events: none;
