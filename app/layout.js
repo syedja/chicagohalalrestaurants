@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/next';
+
 export const metadata = {
   title: 'Chicago Halal Restaurants | Find the Best Halal Food in Chicago',
   description: 'Find verified halal restaurants across Chicago and suburbs. Browse by cuisine or neighborhood.',
@@ -81,6 +83,7 @@ export default function RootLayout({ children }) {
           </div>
         </nav>
         {children}
+        <Analytics />
       </body>
     </html>
   )
