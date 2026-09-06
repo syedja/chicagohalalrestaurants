@@ -28,6 +28,8 @@ const plans = [
     name: 'Featured',
     price: '$29',
     period: '/year',
+    priceMonthly: '$5',
+    savings: 'save 52%',
     border: GOLD,
     features: [
       'Everything in Free',
@@ -41,6 +43,8 @@ const plans = [
     name: 'Premium',
     price: '$99',
     period: '/year',
+    priceMonthly: '$10',
+    savings: 'save 17%',
     border: GOLD,
     badge: 'Most Popular',
     features: [
@@ -139,6 +143,12 @@ export default function Advertise() {
             <div style={{ marginBottom: '1.25rem' }}>
               <span style={{ fontSize: '2.4rem', fontWeight: 800, color: '#111' }}>{plan.price}</span>
               <span style={{ color: '#888', fontSize: '0.85rem' }}>{plan.period}</span>
+              {plan.priceMonthly && (
+                <div style={{ marginTop: '0.4rem', fontSize: '0.9rem', color: '#555' }}>
+                  or <strong style={{ color: '#111' }}>{plan.priceMonthly}</strong>/month
+                  {plan.savings && <span style={{ color: '#7a5c00', fontWeight: 600 }}> — {plan.savings}</span>}
+                </div>
+              )}
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 1.5rem', lineHeight: 1.9 }}>
               {plan.features.map((f, j) => (
