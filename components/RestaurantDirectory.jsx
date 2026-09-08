@@ -153,7 +153,7 @@ export default function RestaurantDirectory({ restaurants = [] }) {
             className={styles.addRestaurantLink}
             href="/advertise"
           >
-            Don't see your favorite restaurant? Help us complete Chicagoland's largest halal restaurant directory. <strong>Add a Restaurant →</strong>
+            Don't see your favorite restaurant? Help us complete Chicagoland's halal restaurant directory. <strong>Add a Restaurant →</strong>
           </a>
 
           <div className={styles.chips} role="group" aria-label="Filter by cuisine">

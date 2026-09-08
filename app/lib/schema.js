@@ -83,7 +83,7 @@ export function restaurantPageSchema({ cuisine, neighborhood, restaurants }) {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `Best Halal ${cuisineLabel} Restaurants in ${neighborLabel}`,
-    description: `Find verified halal ${cuisineLabel.toLowerCase()} restaurants in ${neighborLabel}. Ratings, addresses, and hours.`,
+    description: `Find halal ${cuisineLabel.toLowerCase()} restaurants in ${neighborLabel}. Ratings, addresses, and hours.`,
     url: pageUrl,
     inLanguage: 'en-US',
     publisher,
@@ -174,7 +174,7 @@ export function homepageSchema({ totalRestaurants }) {
       name: SITE_NAME,
       url: SITE_URL,
       description:
-        'Find verified halal restaurants across Chicago and suburbs. Browse by cuisine or neighborhood.',
+        'Find halal restaurants across Chicago and suburbs. Browse by cuisine or neighborhood.',
       publisher,
       potentialAction: {
         '@type': 'SearchAction',

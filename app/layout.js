@@ -2,10 +2,10 @@ import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: 'Chicago Halal Restaurants | Find the Best Halal Food in Chicago',
-  description: 'Find verified halal restaurants across Chicago and suburbs. Browse by cuisine or neighborhood.',
+  description: 'Find halal restaurants across Chicago and suburbs. Browse by cuisine or neighborhood.',
   openGraph: {
     title: 'Chicago Halal Restaurants | Find the Best Halal Food in Chicago',
-    description: 'Find verified halal restaurants across Chicago and suburbs.',
+    description: 'Find halal restaurants across Chicago and suburbs.',
     url: 'https://www.chicagohalalrestaurants.com',
     siteName: 'Chicago Halal Restaurants',
     images: [{ url: 'https://www.chicagohalalrestaurants.com/logo.png', width: 800, height: 800, alt: 'Chicago Halal Restaurants' }],
@@ -15,7 +15,7 @@ export const metadata = {
   twitter: {
     card: 'summary',
     title: 'Chicago Halal Restaurants',
-    description: 'Find verified halal restaurants across Chicago and suburbs.',
+    description: 'Find halal restaurants across Chicago and suburbs.',
     images: ['https://www.chicagohalalrestaurants.com/logo.png'],
   },
   icons: {
