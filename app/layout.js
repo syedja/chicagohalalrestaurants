@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/next';
+import './globals.css';
 
 export const metadata = {
   title: 'Chicago Halal Restaurants | Find the Best Halal Food in Chicago',
@@ -65,7 +66,7 @@ export default function RootLayout({ children }) {
               fontSize: '15px',
             }}>
               <img src="/logo.png" alt="Chicago Halal Restaurants logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
-              <span style={{ fontWeight: '700', fontSize: '15px', color: '#111', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}>Chicago Halal Restaurants</span>
+              <span className="nav-wordmark">Chicago Halal Restaurants</span>
             </a>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <a href="/blog" style={{
