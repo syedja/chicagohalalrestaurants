@@ -64,9 +64,22 @@ export default function RootLayout({ children }) {
               fontWeight: '700',
               fontSize: '15px',
             }}>
-              <img src="/logo.png" alt="" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+              <img src="/logo.png" alt="Chicago Halal Restaurants logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+              <span style={{ fontWeight: '700', fontSize: '15px', color: '#111', whiteSpace: 'nowrap', letterSpacing: '-0.01em' }}>Chicago Halal Restaurants</span>
             </a>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <a href="/blog" style={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#15803d',
+                background: '#dcfce7',
+                textDecoration: 'none',
+                padding: '7px 16px',
+                borderRadius: '6px',
+                whiteSpace: 'nowrap',
+              }}>
+                Guides
+              </a>
               <a href="/grade" style={{
                 fontSize: '14px',
                 fontWeight: '600',
