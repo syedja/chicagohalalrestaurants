@@ -128,6 +128,7 @@ const uniqueCombos = [...new Map(
 }
 
 const blogPosts = [
+  'halal-restaurants-devon-avenue-chicago',
   'zabihah-halal-indian-pakistani-lombard-glendale-heights-devon-ave',
   'halal-mediterranean-bridgeview-oak-lawn',
   'halal-restaurants-naperville-schaumburg',

@@ -2,6 +2,13 @@ import Link from 'next/link'
 
 const blogPosts = [
   {
+    slug: 'halal-restaurants-devon-avenue-chicago',
+    title: 'Halal Restaurants on Devon Avenue, Chicago: The Complete Guide',
+    excerpt: 'A guide to halal restaurants on Devon Avenue, Chicago. Pakistani, Indian, Middle Eastern, and Nepali spots along the historic South Asian food corridor.',
+    tags: ['Devon Avenue', 'Neighborhood Guide', 'Chicago'],
+    date: 'September 6, 2026',
+  },
+  {
     slug: 'halal-mediterranean-bridgeview-oak-lawn',
     title: 'Best Halal Mediterranean & Middle Eastern Restaurants in Bridgeview & Oak Lawn',
     excerpt: 'The southwest suburbs are home to one of the most concentrated Arab-American communities in the Midwest. A guide to the best halal Mediterranean restaurants along the Harlem Avenue corridor and beyond.',
