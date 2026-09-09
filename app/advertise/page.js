@@ -61,8 +61,6 @@ const plans = [
 const certifications = [
   { name: 'HFSAA', full: 'Halal Food Standards Alliance of America' },
   { name: 'HMS', full: 'Halal Monitoring Services' },
-  { name: 'ISWA', full: 'Islamic Society of the Washington Area' },
-  { name: 'MCG', full: 'Muslim Consumer Group' },
 ]
 
 const steps = [

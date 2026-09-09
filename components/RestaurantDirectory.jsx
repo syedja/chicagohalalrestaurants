@@ -246,7 +246,7 @@ export default function RestaurantDirectory({ restaurants = [] }) {
             Free listings for every Zabihah halal restaurant in Chicagoland. Featured spots and
             dedicated pages available.
           </p>
-          <p className={styles.footTiers}>Featured $29/yr and Premium $99/yr available. Accepted certifications: HFSAA, HMS, ISWA, MCG.</p>
+          <p className={styles.footTiers}>Featured $29/yr and Premium $99/yr available. Accepted certifications: HFSAA, HMS.</p>
           <div className={styles.footActions}>
             <a className={styles.footBtn} href="https://wa.me/16302104365" target="_blank" rel="noopener noreferrer">
               WhatsApp us · (630) 210-4365
