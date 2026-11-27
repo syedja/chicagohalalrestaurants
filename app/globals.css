@@ -11,3 +11,15 @@
     display: none;
   }
 }
+
+/* Header "For restaurant owners" link: tighter on small phones so the nav fits */
+@media (max-width: 480px) {
+  .nav-owners {
+    font-size: 12px !important;
+    padding: 6px 4px !important;
+    white-space: normal !important;
+    line-height: 1.15;
+    text-align: center;
+    max-width: 84px;
+  }
+}

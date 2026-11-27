@@ -541,3 +541,16 @@
 .full {
   color: #7a5c00;
 }
+/* "Own this place? Claim or fix it" — deliberately small and quiet */
+.claimLink {
+  display: block;
+  padding: 0 1rem 0.65rem;
+  font-size: 0.72rem;
+  color: var(--chd-mute);
+  text-decoration: none;
+}
+.claimLink:hover,
+.claimLink:focus-visible {
+  color: var(--chd-forest);
+  text-decoration: underline;
+}

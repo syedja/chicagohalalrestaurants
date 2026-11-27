@@ -301,7 +301,7 @@ export default function BlogPost() {
           padding: '0.75rem 2rem', borderRadius: '8px', textDecoration: 'none',
           fontWeight: '700', fontSize: '1rem'
         }}>
-          Get Listed — Plans from $19/mo
+          Get Listed →
         </Link>
       </section>
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import styles from './report.module.css';
+import { PRICE_FEATURED, PRICE_PREMIUM, claimHref, splitPrice } from '@/lib/siteConfig';
 
 const WEIGHTS = {
   listed: 30,
@@ -79,7 +80,7 @@ function CheckItem({ type, passes, isWarn }) {
   );
 }
 
-// Shared pricing block — Free / Featured ($29/yr) / Premium ($99/yr)
+// Shared pricing block — Featured / Premium, prices from lib/siteConfig.js
 function PricingTiers({ needsFeatured, needsPremium, heading, ctaHref, ctaLabel }) {
   return (
     <div className={styles.upsellBox}>
@@ -88,7 +89,7 @@ function PricingTiers({ needsFeatured, needsPremium, heading, ctaHref, ctaLabel 
         {needsFeatured && (
           <div className={styles.tierCard}>
             <span className={styles.tierLabel}>Featured</span>
-            <span className={styles.tierPrice}>$29<span>/yr</span></span>
+            <span className={styles.tierPrice}>{splitPrice(PRICE_FEATURED).amount}<span>{splitPrice(PRICE_FEATURED).period}</span></span>
             <ul className={styles.tierFeatures}>
               <li>Verified halal badge</li>
               <li>Phone &amp; hours listed</li>
@@ -98,9 +99,8 @@ function PricingTiers({ needsFeatured, needsPremium, heading, ctaHref, ctaLabel 
         )}
         {needsPremium && (
           <div className={`${styles.tierCard} ${styles.tierCardPremium}`}>
-            <span className={styles.tierBadge}>Most popular</span>
             <span className={styles.tierLabel}>Premium</span>
-            <span className={styles.tierPrice}>$99<span>/yr</span></span>
+            <span className={styles.tierPrice}>{splitPrice(PRICE_PREMIUM).amount}<span>{splitPrice(PRICE_PREMIUM).period}</span></span>
             <ul className={styles.tierFeatures}>
               <li>Everything in Featured</li>
               <li>Dedicated restaurant page</li>
@@ -119,7 +119,6 @@ function ReportCard({ data, onReset }) {
   const { restaurant, checks, score, alternatives } = data;
   const needsFeatured = !checks.verified || !checks.phone || !checks.hours;
   const needsPremium = !checks.photo || !checks.description;
-  const subject = encodeURIComponent(`Claim listing for ${restaurant.name}`);
 
   return (
     <div className={styles.resultCard}>
@@ -168,7 +167,7 @@ function ReportCard({ data, onReset }) {
           needsFeatured={needsFeatured}
           needsPremium={needsPremium}
           heading="Fix these issues and get more customers"
-          ctaHref={`mailto:hello@chicagohalalrestaurants.com?subject=${subject}`}
+          ctaHref={restaurant.name ? claimHref(restaurant.name) : '/advertise'}
           ctaLabel="Claim my listing →"
         />
       )}
@@ -197,7 +196,6 @@ function ReportCard({ data, onReset }) {
 }
 
 function NotFoundCard({ query }) {
-  const subject = encodeURIComponent(`Add my restaurant: ${query}`);
   return (
     <div className={styles.resultCard}>
       <div className={styles.reportHeader}>
@@ -224,7 +222,7 @@ function NotFoundCard({ query }) {
         needsFeatured
         needsPremium
         heading="Get listed and start getting found"
-        ctaHref={`mailto:hello@chicagohalalrestaurants.com?subject=${subject}`}
+        ctaHref={query ? claimHref(query) : '/advertise'}
         ctaLabel="Get my restaurant listed →"
       />
     </div>

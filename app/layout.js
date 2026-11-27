@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/next';
+import Link from 'next/link';
 import './globals.css';
 
 export const metadata = {
@@ -93,10 +94,25 @@ export default function RootLayout({ children }) {
               }}>
                 Free Visibility Report
               </a>
+              <Link href="/advertise" className="nav-owners" style={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#15803d',
+                textDecoration: 'none',
+                padding: '7px 10px',
+                whiteSpace: 'nowrap',
+              }}>
+                For restaurant owners
+              </Link>
             </div>
           </div>
         </nav>
         {children}
+        <footer style={{ textAlign: 'center', padding: '1.25rem 1rem 1.5rem', fontSize: '0.85rem', borderTop: '1px solid #e5e7eb', background: '#fff' }}>
+          <Link href="/claim" style={{ color: '#15803d', fontWeight: 600, textDecoration: 'none' }}>
+            For restaurant owners: claim or fix your listing →
+          </Link>
+        </footer>
         <Analytics />
       </body>
     </html>

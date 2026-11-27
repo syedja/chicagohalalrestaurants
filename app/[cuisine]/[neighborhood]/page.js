@@ -3,6 +3,7 @@ import { restaurantPageSchema } from '@/app/lib/schema'
 import restaurants from '../../data/restaurants.json'
 import content from '../../data/content.json'
 import Link from 'next/link'
+import { claimHref } from '@/lib/siteConfig'
 
 const metaMap = {
   'pakistani|devon-ave':       { title: 'Best Halal Pakistani Restaurants on Devon Ave, Chicago', desc: "Discover the top halal Pakistani restaurants on Devon Ave — karahi, nihari, biryani, and fresh naan from Chicago's most authentic desi food street." },
@@ -138,7 +139,7 @@ const metaMap = {
 }
 
 export async function generateStaticParams() {
-  const reservedRoutes = ['blog', 'neighborhood', 'advertise', 'grade', 'about', 'api']
+  const reservedRoutes = ['blog', 'neighborhood', 'advertise', 'grade', 'about', 'api', 'claim']
   const combinations = []
   const cuisines = [...new Set(restaurants.map(r => r.cuisine))]
   cuisines.forEach(c => {
@@ -185,7 +186,7 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const { cuisine, neighborhood } = await params
 
-  const reservedRoutes = ['blog', 'neighborhood', 'advertise', 'grade', 'about', 'api']
+  const reservedRoutes = ['blog', 'neighborhood', 'advertise', 'grade', 'about', 'api', 'claim']
   if (reservedRoutes.includes(cuisine)) {
     notFound()
   }
@@ -235,6 +236,7 @@ export default async function Page({ params }) {
               <p style={{ margin: 0, fontSize: '0.82rem', color: '#888' }}>
                 {r.zabihah_confirmed ? '✅ Zabihah Halal Certified' : r.certified_halal ? '✅ Halal' : ''} {r.family_friendly ? '· 👨‍👩‍👧 Family Friendly' : ''} {r.delivery_available ? '· 🚗 Delivery Available' : ''}
               </p>
+              <a href={claimHref(r.name)} style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.75rem', color: '#888', textDecoration: 'none' }}>Own this place? Claim or fix it</a>
             </div>
           ))}
         </div>
@@ -246,7 +248,7 @@ export default async function Page({ params }) {
           display: 'inline-block', background: '#16a34a', color: '#fff',
           padding: '0.6rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '600'
         }}>
-          Get Featured — $19/mo
+          Get Featured →
         </Link>
       </div>
 

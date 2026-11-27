@@ -1,4 +1,8 @@
 import Link from 'next/link'
+import {
+  STRIPE_FEATURED_URL, STRIPE_PREMIUM_URL, PRICE_FEATURED, PRICE_PREMIUM,
+  FOUNDING_PARTNER_NOTE, linkOrMailto, mailtoContact, splitPrice,
+} from '@/lib/siteConfig'
 
 export const metadata = {
   title: 'List Your Restaurant | Chicago Halal Restaurants',
@@ -14,39 +18,33 @@ const plans = [
   {
     name: 'Free',
     price: '$0',
-    period: '',
     border: '#e6dfc9',
     features: [
       'Listed in the searchable directory',
       'Name, cuisine & neighborhood shown',
-      'Halal Certified badge if verified',
     ],
     cta: 'Get Listed Free',
-    href: 'mailto:info@chicagohalalrestaurants.com?subject=Free Listing Request',
+    href: '/claim',
   },
   {
     name: 'Featured',
-    price: '$29',
-    period: '/year',
-    priceMonthly: '$5',
-    savings: 'save 52%',
+    price: PRICE_FEATURED,
+    note: FOUNDING_PARTNER_NOTE,
     border: GOLD,
     features: [
       'Everything in Free',
+      'Verified halal badge',
       'Highlighted card styling in the directory',
       'Priority placement within your cuisine',
     ],
     cta: 'Get Featured',
-    href: 'mailto:info@chicagohalalrestaurants.com?subject=Featured Listing Request',
+    href: linkOrMailto(STRIPE_FEATURED_URL, 'Featured Listing Request'),
+    newTab: true,
   },
   {
     name: 'Premium',
-    price: '$99',
-    period: '/year',
-    priceMonthly: '$10',
-    savings: 'save 17%',
+    price: PRICE_PREMIUM,
     border: GOLD,
-    badge: 'Most Popular',
     features: [
       'Everything in Featured',
       'Dedicated page at chicagohalalrestaurants.com/yourrestaurantname',
@@ -54,7 +52,8 @@ const plans = [
       'Website, socials & directions links',
     ],
     cta: 'Get Premium',
-    href: 'mailto:info@chicagohalalrestaurants.com?subject=Premium Listing Request',
+    href: linkOrMailto(STRIPE_PREMIUM_URL, 'Premium Listing Request'),
+    newTab: true,
   },
 ]
 
@@ -71,8 +70,8 @@ const steps = [
 ]
 
 const faqs = [
-  { q: 'Is the Free tier really free, forever?', a: 'Yes. Every certified halal restaurant can be listed in our directory at no cost — name, cuisine, neighborhood, and a Halal Certified badge.' },
-  { q: 'Why annual billing instead of monthly?', a: 'At these price points, monthly card processing fees would eat a meaningful chunk of what you pay. Annual billing keeps more of your money going toward your listing, not transaction fees.' },
+  { q: 'Is the Free tier really free, forever?', a: 'Yes. Every certified halal restaurant can be listed in our directory at no cost — name, cuisine, and neighborhood.' },
+  { q: 'Why is billing annual?', a: 'Featured and Premium are billed once a year. Paying once keeps card processing fees from eating into what you pay, so more of your money goes toward your listing.' },
   { q: 'Can I pay by Zelle instead of card?', a: "Yes — message us on WhatsApp and we'll set that up directly, no online payment required." },
   { q: 'Do I need to build my own Premium page?', a: "No. Send us your menu, photos, and details, and we'll build and publish your dedicated page for you." },
   { q: 'Can I upgrade later?', a: 'Yes — start on Free and move up to Featured or Premium whenever you\'re ready.' },
@@ -98,7 +97,7 @@ export default function Advertise() {
         </h1>
         <p style={{ fontSize: '1.05rem', color: '#555', maxWidth: '560px', margin: '0 auto 1rem', lineHeight: 1.6 }}>
           Every Zabihah halal restaurant in Chicagoland can be listed for free. Featured and
-          Premium tiers get you more visibility for the price of a couple coffees a month.
+          Premium tiers get you more visibility, billed once a year.
         </p>
         <div style={{ display: 'inline-block', background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '8px', padding: '0.5rem 1.25rem', fontSize: '0.88rem', color: '#92400e', fontWeight: 600 }}>
           We aim to list only halal restaurants, and verify Zabihah certification with owners.
@@ -128,23 +127,13 @@ export default function Advertise() {
             borderRadius: '16px', padding: '1.75rem 1.5rem', position: 'relative',
             boxShadow: '0 2px 8px rgba(20,53,42,0.06)'
           }}>
-            {plan.badge && (
-              <div style={{
-                position: 'absolute', top: '-13px', left: '50%', transform: 'translateX(-50%)',
-                background: GOLD, color: FOREST_DEEP, padding: '0.28rem 1.1rem',
-                borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap'
-              }}>
-                {plan.badge}
-              </div>
-            )}
             <h2 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: '1.25rem', fontWeight: 600, color: FOREST, margin: '0 0 0.5rem' }}>{plan.name}</h2>
             <div style={{ marginBottom: '1.25rem' }}>
-              <span style={{ fontSize: '2.4rem', fontWeight: 800, color: '#111' }}>{plan.price}</span>
-              <span style={{ color: '#888', fontSize: '0.85rem' }}>{plan.period}</span>
-              {plan.priceMonthly && (
-                <div style={{ marginTop: '0.4rem', fontSize: '0.9rem', color: '#555' }}>
-                  or <strong style={{ color: '#111' }}>{plan.priceMonthly}</strong>/month
-                  {plan.savings && <span style={{ color: '#7a5c00', fontWeight: 600 }}> — {plan.savings}</span>}
+              <span style={{ fontSize: '2.4rem', fontWeight: 800, color: '#111' }}>{splitPrice(plan.price).amount}</span>
+              <span style={{ color: '#888', fontSize: '0.85rem' }}>{splitPrice(plan.price).period}</span>
+              {plan.note && (
+                <div style={{ marginTop: '0.4rem', fontSize: '0.9rem', color: '#7a5c00', fontWeight: 600 }}>
+                  {plan.note}
                 </div>
               )}
             </div>
@@ -158,7 +147,7 @@ export default function Advertise() {
                 </li>
               ))}
             </ul>
-            <a href={plan.href} style={{
+            <a href={plan.href} {...(plan.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})} style={{
               display: 'block', textAlign: 'center',
               background: plan.name === 'Free' ? '#fff' : FOREST,
               color: plan.name === 'Free' ? FOREST : '#fff',
@@ -227,7 +216,7 @@ export default function Advertise() {
         <h2 style={{ fontFamily: "'Fraunces', Georgia, serif", color: IVORY, margin: '0 0 0.5rem', fontWeight: 600 }}>Ready to be found?</h2>
         <p style={{ color: 'rgba(247,243,232,0.7)', margin: '0 0 1.25rem' }}>Let's talk about your restaurant — no cost, no pressure.</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '1rem' }}>
-          <a href="mailto:info@chicagohalalrestaurants.com" style={{
+          <a href={mailtoContact()} style={{
             display: 'inline-block', background: GOLD, color: FOREST_DEEP,
             padding: '0.8rem 2rem', borderRadius: '8px', textDecoration: 'none',
             fontWeight: 700, fontSize: '0.95rem'

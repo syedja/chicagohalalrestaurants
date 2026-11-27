@@ -1,5 +1,6 @@
 import { blogPostSchema } from '@/app/lib/schema'
 import Link from 'next/link'
+import { PRICE_FEATURED, PRICE_PREMIUM } from '@/lib/siteConfig'
 
 export const metadata = {
   title: 'How to Get Your Halal Restaurant Found Online in Chicago',
@@ -12,8 +13,8 @@ const faqs = [
     answer: 'Most general food platforms like Yelp and Google Maps do not have a dedicated halal filter. A diner searching "halal Pakistani restaurant near me" may get results mixing certified halal restaurants with restaurants that simply have a Muslim-sounding name. Halal-specific directories solve this by surfacing only halal restaurants for relevant searches, putting certified restaurants in front of the diners who specifically need them.',
   },
   {
-    question: 'What is the difference between a Standard and Premium listing?',
-    answer: 'A Standard listing ($19/mo) gives your restaurant a verified listing on Chicago Halal Restaurants with your certification badge displayed, phone number, hours, and description. A Premium listing ($49/mo) adds AEO (Answer Engine Optimization) — structured JSON-LD markup specifically designed to surface your restaurant in AI-generated answers on ChatGPT, Perplexity, and Google AI Overview when someone asks "what are the best halal restaurants in [neighborhood]".',
+    question: 'What listing options are there?',
+    answer: `Every halal restaurant can be listed for free. Featured (${PRICE_FEATURED}) adds a verified halal badge, highlighted styling and priority placement. Premium (${PRICE_PREMIUM}) adds a dedicated page for your restaurant with your menu, photos and hours. See the For Restaurant Owners page for full details.`,
   },
   {
     question: 'What is AEO and why does it matter for halal restaurants?',
@@ -25,19 +26,19 @@ const faqs = [
   },
   {
     question: 'Do I need to be HFSAA or HMS certified to get listed?',
-    answer: 'No. Any halal restaurant can claim a Standard or Premium listing. However, if you are HFSAA or HMS certified, your certification badge will be displayed prominently on your listing — which significantly increases trust with observant Muslim diners who specifically look for third-party certification. Uncertified listings are labeled accordingly.',
+    answer: 'No. Any halal restaurant can claim a Free, Featured or Premium listing. However, if you are HFSAA or HMS certified, your certification badge will be displayed prominently on your listing — which significantly increases trust with observant Muslim diners who specifically look for third-party certification. Uncertified listings are labeled accordingly.',
   },
   {
     question: 'What information do I need to provide for a listing?',
-    answer: 'For a Standard listing: restaurant name, address, phone number, hours of operation, cuisine type, a brief description, and halal certification details if applicable. For a Premium listing, we also gather additional details about your menu, specialties, and certification documentation to build out the full structured data markup.',
+    answer: 'For a listing: restaurant name, address, phone number, hours of operation, cuisine type, a brief description, and halal certification details if applicable. For a Premium listing, we also gather additional details about your menu, specialties, and certification documentation to build out the full structured data markup.',
   },
   {
     question: 'Can I update my listing after it goes live?',
     answer: 'Yes. Verified listing holders can contact us to update their hours, phone number, description, photos, and certification status at any time. Keeping your listing accurate is important — outdated hours are one of the top reasons diners leave negative reviews.',
   },
   {
-    question: 'Is there a contract or minimum commitment?',
-    answer: 'No long-term contract. Standard and Premium listings are month-to-month and can be cancelled at any time. We believe the value should speak for itself — you should not need to be locked in to stay listed.',
+    question: 'How is billing handled?',
+    answer: 'The Free listing costs nothing. Featured and Premium are billed once a year. Questions about billing? Contact us any time.',
   },
 ]
 
@@ -219,47 +220,13 @@ export default function BlogPost() {
           Listing Options and Pricing
         </h2>
         <p style={{ color: '#444', lineHeight: 1.75, marginBottom: '1.5rem' }}>
-          Chicago Halal Restaurants offers two paid listing tiers designed for different stages of your online presence:
+          Chicago Halal Restaurants offers a free listing and two paid tiers, billed once a year:
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
-          <div style={{ background: '#fff', border: '2px solid #e5e7eb', borderRadius: '14px', padding: '1.5rem' }}>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '1.5rem', fontWeight: '800', color: '#111' }}>$19<span style={{ fontSize: '0.9rem', fontWeight: '400', color: '#888' }}>/mo</span></p>
-            <p style={{ margin: '0 0 1rem', fontWeight: '700', color: '#111', fontSize: '1.05rem' }}>Standard</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {[
-                'Verified listing badge',
-                'Certification badge displayed',
-                'Phone, hours & address',
-                'Restaurant description',
-                'Priority over unverified listings',
-                'Month-to-month, cancel anytime',
-              ].map(f => (
-                <p key={f} style={{ margin: 0, fontSize: '0.88rem', color: '#444', display: 'flex', gap: '0.5rem' }}>
-                  <span style={{ color: '#16a34a', fontWeight: '700' }}>✓</span> {f}
-                </p>
-              ))}
-            </div>
-          </div>
-          <div style={{ background: '#f0fdf4', border: '2px solid #16a34a', borderRadius: '14px', padding: '1.5rem', position: 'relative' }}>
-            <span style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: '#16a34a', color: '#fff', fontSize: '0.75rem', fontWeight: '700', padding: '3px 12px', borderRadius: '20px' }}>MOST POPULAR</span>
-            <p style={{ margin: '0 0 0.25rem', fontSize: '1.5rem', fontWeight: '800', color: '#111' }}>$49<span style={{ fontSize: '0.9rem', fontWeight: '400', color: '#888' }}>/mo</span></p>
-            <p style={{ margin: '0 0 1rem', fontWeight: '700', color: '#15803d', fontSize: '1.05rem' }}>Premium</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {[
-                'Everything in Standard',
-                'AEO structured data markup',
-                'Appears in ChatGPT & Perplexity results',
-                'Google AI Overview optimization',
-                'Featured placement in directory',
-                'Month-to-month, cancel anytime',
-              ].map(f => (
-                <p key={f} style={{ margin: 0, fontSize: '0.88rem', color: '#444', display: 'flex', gap: '0.5rem' }}>
-                  <span style={{ color: '#16a34a', fontWeight: '700' }}>✓</span> {f}
-                </p>
-              ))}
-            </div>
-          </div>
-        </div>
+        <ul style={{ color: '#444', lineHeight: 1.75, marginBottom: '1.5rem', paddingLeft: '1.25rem' }}>
+          <li><strong>Free</strong> — listed in the searchable directory with your name, cuisine and neighborhood.</li>
+          <li><strong>Featured ({PRICE_FEATURED})</strong> — verified halal badge, highlighted styling and priority placement.</li>
+          <li><strong>Premium ({PRICE_PREMIUM})</strong> — everything in Featured, plus a dedicated page with your menu, photos and hours.</li>
+        </ul>
         <div style={{ textAlign: 'center' }}>
           <Link href="/advertise" style={{
             display: 'inline-block', background: '#16a34a', color: '#fff',
@@ -268,7 +235,7 @@ export default function BlogPost() {
           }}>
             Get Listed Today
           </Link>
-          <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: '#888' }}>No contract. Cancel anytime. Setup within 24-48 hours.</p>
+          <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: '#888' }}>Setup within 24-48 hours.</p>
         </div>
       </section>
 

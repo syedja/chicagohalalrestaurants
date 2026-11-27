@@ -1,5 +1,6 @@
 import restaurants from '../../data/restaurants.json'
 import Link from 'next/link'
+import { claimHref } from '@/lib/siteConfig'
 
 export async function generateStaticParams() {
   const neighborhoods = [...new Set(restaurants.map(r => r.neighborhood))]
@@ -44,6 +45,7 @@ export default async function NeighborhoodPage({ params }) {
                 <h3 style={{ margin: '0 0 0.25rem', fontSize: '1rem', fontWeight: '600', color: '#111' }}>{r.name}</h3>
                 <p style={{ margin: '0 0 0.25rem', color: '#555', fontSize: '0.85rem' }}>📍 {r.address}</p>
                 <p style={{ margin: 0, color: '#f59e0b', fontSize: '0.85rem', fontWeight: '600' }}>★ {r.rating} / 5</p>
+                <a href={claimHref(r.name)} style={{ display: 'inline-block', marginTop: '0.4rem', fontSize: '0.75rem', color: '#888', textDecoration: 'none' }}>Own this place? Claim or fix it</a>
               </div>
             ))}
           </div>
@@ -52,7 +54,7 @@ export default async function NeighborhoodPage({ params }) {
       <div style={{ marginTop: '2rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '12px', padding: '1.5rem', textAlign: 'center' }}>
         <p style={{ margin: '0 0 0.75rem', fontWeight: '600', color: '#15803d' }}>🍽️ Own a restaurant in {n}?</p>
         <Link href="/advertise" style={{ display: 'inline-block', background: '#16a34a', color: '#fff', padding: '0.6rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '600' }}>
-          Get Featured — from $19/mo
+          Get Featured →
         </Link>
       </div>
     </main>
