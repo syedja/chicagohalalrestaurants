@@ -13,7 +13,8 @@ const WEIGHTS = {
 function scoreRestaurant(r) {
   return {
     listed:      true,
-    verified:    !!r.certified_halal,
+    // Only the gold-label restaurants (verified with HMS or HFSAA) pass.
+    verified:    !!r.zabihah_confirmed,
     phone:       !!(r.phone && r.phone.trim()),
     hours:       !!(r.hours && r.hours.trim()),
     photo:       !!(r.photo_url || r.image || r.photo),

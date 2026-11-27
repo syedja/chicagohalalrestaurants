@@ -19,8 +19,8 @@ const CHECK_COPY = {
     fail: "Not in our directory — you're invisible to halal food seekers",
   },
   verified: {
-    pass: 'Halal status verified (certified)',
-    warn: 'Halal status unverified — Featured listing adds your verified badge',
+    pass: 'Zabihah certification verified with HMS or HFSAA',
+    warn: 'Halal status not yet verified — claim your listing to get verified',
   },
   phone: {
     pass: 'Phone number listed',
