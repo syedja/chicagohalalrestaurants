@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './report.module.css';
 import { PRICE_FEATURED, PRICE_PREMIUM, claimHref, splitPrice } from '@/lib/siteConfig';
 
@@ -229,13 +229,14 @@ function NotFoundCard({ query }) {
   );
 }
 
-const EXAMPLE_QUERIES = ['Sabri Nihari', 'Bundoo Khan', 'Ghareeb Nawaz', 'Your restaurant'];
+const EXAMPLE_QUERIES = ['Sabri Nihari', 'Bundoo Khan', 'Ghareeb Nawaz'];
 
 export default function VisibilityReportClient({ initialQuery }) {
   const [query, setQuery] = useState(initialQuery || '');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (initialQuery) runReport(initialQuery);
@@ -269,6 +270,7 @@ export default function VisibilityReportClient({ initialQuery }) {
       <div className={styles.searchRow}>
         <input
           type="text"
+          ref={inputRef}
           className={styles.searchInput}
           placeholder="Enter your restaurant name..."
           value={query}
@@ -312,6 +314,12 @@ export default function VisibilityReportClient({ initialQuery }) {
                 {name}
               </button>
             ))}
+            <button
+              className={styles.examplePill}
+              onClick={() => inputRef.current?.focus()}
+            >
+              Search yours ↑
+            </button>
           </div>
         </div>
       )}
