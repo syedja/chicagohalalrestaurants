@@ -5,8 +5,11 @@ export const metadata = {
   description: "See how visible your halal restaurant is to customers searching online. Get your free visibility report and find out exactly how to get more customers from Chicago's halal restaurant directory.",
 };
 
-export default function VisibilityReportPage({ searchParams }) {
-  const initialQuery = searchParams?.q || '';
+export default async function VisibilityReportPage({ searchParams }) {
+  // Next.js 16: searchParams is a Promise and must be awaited.
+  const params = await searchParams;
+  const q = Array.isArray(params?.q) ? params.q[0] : params?.q;
+  const initialQuery = (q || '').trim().slice(0, 120);
 
   return (
     <main style={{ paddingTop: '2rem' }}>
