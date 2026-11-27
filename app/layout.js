@@ -109,6 +109,10 @@ export default function RootLayout({ children }) {
         </nav>
         {children}
         <footer style={{ textAlign: 'center', padding: '1.25rem 1rem 1.5rem', fontSize: '0.85rem', borderTop: '1px solid #e5e7eb', background: '#fff' }}>
+          <Link href="/about" style={{ color: '#15803d', fontWeight: 600, textDecoration: 'none' }}>
+            About us
+          </Link>
+          <span style={{ color: '#d1d5db', margin: '0 0.6rem' }}>·</span>
           <Link href="/claim" style={{ color: '#15803d', fontWeight: 600, textDecoration: 'none' }}>
             For restaurant owners: claim or fix your listing →
           </Link>

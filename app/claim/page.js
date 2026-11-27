@@ -5,7 +5,7 @@ import {
 
 export const metadata = {
   title: 'Claim Your Restaurant Listing | Chicago Halal Restaurants',
-  description: 'Own a halal restaurant in Chicagoland? Claim your free listing on Chicago Halal Restaurants or correct your details. We verify every listing.',
+  description: 'Own a halal restaurant in Chicagoland? Claim your free listing on Chicago Halal Restaurants or correct your details. We check every claim before changing a listing.',
   alternates: { canonical: 'https://www.chicagohalalrestaurants.com/claim' },
 }
 
@@ -61,7 +61,7 @@ export default async function ClaimPage({ searchParams }) {
           Claim your listing
         </h1>
         <p style={{ fontSize: '1.05rem', color: '#555', maxWidth: '560px', margin: '0 auto', lineHeight: 1.6 }}>
-          Own a halal restaurant in Chicagoland? Claim your free listing or correct your details. We verify every listing.
+          Own a halal restaurant in Chicagoland? Claim your free listing or correct your details. We check every claim before changing a listing.
         </p>
       </div>
 
